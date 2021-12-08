@@ -14,6 +14,10 @@ function App(props) {
   
   const setTokens = (data) => {
     console.log('setTokens:',data)
+    /* Huom. logout kutsuu setTokens-funktiota ilman dataa,
+       jolloin authTokens-alkuarvoksi tulisi merkkijono 'undefined'. 
+       Tässä removeItem tuottaa authTokens-alkuarvoksi null,
+       jolloin sen boolean arvo on oikein false. */
     if (data) sessionStorage.setItem("tokens", JSON.stringify(data));
     else sessionStorage.removeItem("tokens");
     setAuthTokens(data);
