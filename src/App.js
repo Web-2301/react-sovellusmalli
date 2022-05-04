@@ -6,6 +6,8 @@ import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Signup from './pages/Signup';
 import { AuthContext } from "./context/Auth";
+import Navbar from "./components/Navbar";
+import logoImg from "./img/omnia_logo.png";
 
 function App(props) {
   //const existingTokens = JSON.parse(localStorage.getItem("tokens") || '');
@@ -27,14 +29,17 @@ function App(props) {
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       {console.log("Provider,authTokens:",authTokens)}
       <div>
-        <ul>
+        {
+        /*<ul>
           <li>
             <Link to="/">Home Page</Link>
           </li>
           <li>
             <Link to="/admin">Admin Page</Link>
           </li>
-        </ul>
+         </ul>*/
+         }
+        <Navbar/> 
         <Routes>
           <Route exact path="/" element={<Home/>} />
           <Route path="/login" element={<Login/>} />
