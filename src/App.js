@@ -1,10 +1,10 @@
 import React, { useState } from "react"
-import { Routes, Link, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Private from './PrivateRoute';
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
-import Login from "./pages/Login";
 import Signup from './pages/Signup';
+import Login from './pages/Login';
 import { AuthContext } from "./context/Auth";
 import Navbar from "./components/Navbar";
 import logoImg from "./img/omnia_logo.png";
