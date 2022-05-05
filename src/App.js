@@ -31,12 +31,8 @@ function App(props) {
       <div>
         {
         /*<ul>
-          <li>
-            <Link to="/">Home Page</Link>
-          </li>
-          <li>
-            <Link to="/admin">Admin Page</Link>
-          </li>
+          <li><Link to="/">Home Page</Link></li>
+          <li><Link to="/admin">Admin Page</Link></li>
          </ul>*/
          }
         <Navbar/> 

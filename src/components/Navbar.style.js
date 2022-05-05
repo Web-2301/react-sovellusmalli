@@ -27,12 +27,8 @@ export const NavLink = styled(Link)`
 color: white;
 font-size: x-large; 
 text-decoration: none;
-@media (min-width: 700px) {
-  display: inline-block;  
-  font-family: Arial, Helvetica, sans-serif;
-  text-decoration: none;
-  margin: 10px;
-}
+font-family: Arial, Helvetica, sans-serif;
+margin: 5px 10px;
 `;
 
 export const Logo = styled.img`
