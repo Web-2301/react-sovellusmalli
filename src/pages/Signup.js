@@ -8,6 +8,7 @@ import axios from 'axios';
 function Signup() {
   const [signedUp, setSignedUp] = useState(false);
   const [error, setError] = useState(false);
+  // const { register, handleSubmit, reset, watch, formState: { errors } } = useForm({reValidateMode: 'onBlur'});
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
   const password = useRef({});
   password.current = watch("password", "");
@@ -15,7 +16,7 @@ function Signup() {
   function postSignup(data) {
     console.log("data:",data)
     const url = "http://localhost:5000/reactapi/signup" 
-    axios.post(url,{data})
+    axios.post(url,data)
       .then(result => {
       console.log(result.data)  
       if (result.status === 200 && result.data === "OK") {
@@ -38,17 +39,35 @@ function Signup() {
       <Logo src={logoImg} />
       <Form>
       <Input 
-        type="email" 
         placeholder="sähköpostiosoite"
-        {...register("username", { required: true })}
+        {...register("email", { 
+          required: true,
+          pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+         })}
       /> 
-      {errors.username && <Error>Anna sähköpostiosoite</Error>} 
+      {errors.email?.type === 'required' && <Error>Anna sähköpostiosoite</Error>} 
+      {errors.email?.type === 'pattern'  && <Error>Virheellinen sähköpostiosoite</Error>} 
+      <Input 
+        placeholder="käyttäjätunnus"
+        {...register("username", { 
+          required: true,
+          minLength: 3
+         })}
+      /> 
+      {errors.username?.type === 'required' && <Error>Anna sähköpostiosoite</Error>} 
+      {errors.username?.type === 'minLength'  && <Error>Vähintään kolme merkkiä</Error>} 
+ 
+     
       <Input 
         type="password" 
         placeholder="salasana" 
-        {...register("password", { required: true })}
+        {...register("password", { 
+          required: true,
+          pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/
+         })}
       />
-      {errors.password && <Error>Anna salasana</Error>} 
+      {errors.password?.type === 'required' && <Error>Anna salasana</Error>} 
+      {errors.email?.type === 'pattern'  && <Error>Vähintään 8 merkkiä, ainakin yksi numero ja kirjain</Error>} 
       <Input 
         type="password" 
         placeholder="salasana uudestaan" 

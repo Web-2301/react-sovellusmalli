@@ -19,7 +19,7 @@ const Form = styled.div`
 const Input = styled.input`
   padding: 1rem;
   border: 1px solid #999;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
   font-size: 0.8rem;
 `;
 
@@ -31,7 +31,7 @@ const Button = styled.button`
   color: white;
   font-weight: 700;
   width: 100%;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
   font-size: 0.8rem;
 `;
 
@@ -42,6 +42,9 @@ const Logo = styled.img`
 
 const Error = styled.div`
   background-color: red;
+  color: white;
+  margin-top: 2px;
+  font-size: 0.8rem;
 `;
 
 export { Form, Input, Button, Logo, Card, Error };
