@@ -10,6 +10,11 @@ const Card = styled.div`
   align-items: center;
 `;
 
+const Otsikko = styled.h2`
+  margin: 0 auto;
+  padding: 1rem 2rem;
+`;
+
 const Form = styled.div`
   display: flex;
   flex-direction: column;
@@ -47,4 +52,4 @@ const Error = styled.div`
   font-size: 0.8rem;
 `;
 
-export { Form, Input, Button, Logo, Card, Error };
+export { Form, Otsikko, Input, Button, Logo, Card, Error };

@@ -1,7 +1,7 @@
 import React, { useState,useRef } from "react";
 import { Link, Navigate } from 'react-router-dom';
 import logoImg from "../img/omnia_logo.png";
-import { Card, Logo, Form, Input, Button, Error } from '../components/AuthForm';
+import { Card, Otsikko, Logo, Form, Input, Button, Error } from '../components/AuthForm';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 
@@ -21,8 +21,8 @@ function Signup() {
         if (result.status === 200 && result.data === "OK") {
           setSignedUp(true);
         } else {
-          let x = Object.entries(result.data) 
-          console.log('virheellinen tulos:',x)  
+          //let x = Object.entries(result.data) 
+          //console.log('virheellinen tulos:',x)  
                       
           Object.entries(result.data).map(([key,arvo]) =>           
           setError(
@@ -32,9 +32,7 @@ function Signup() {
             )
           )
         }
-    }).catch(e => {
-      //setError(true);
-    });
+    }).catch(e => {setError('apiError',{ message:e })})
   }
   
   if (signedUp) {
@@ -44,8 +42,10 @@ function Signup() {
 
   return (
     <Card>
-      <Logo src={logoImg} />
+      {/*<Logo src={logoImg} />*/}
+      <Otsikko>Rekisteröityminen</Otsikko>
       <Form>
+      {errors.apiError && <Error>{errors.apiError.message}</Error>}  
       <Input 
         placeholder="sähköpostiosoite"
         {...register("email", { 

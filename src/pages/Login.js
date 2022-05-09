@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import logoImg from "../img/omnia_logo.png";
-import { Card, Logo, Form, Input, Button, Error } from "../components/AuthForm";
+import { Card, Otsikko, Logo, Form, Input, Button, Error } from "../components/AuthForm";
 import { useAuth } from "../context/Auth";
 
 function Login(props) {
@@ -51,7 +51,8 @@ function Login(props) {
 
   return (
     <Card>
-      <Logo src={logoImg} />
+      {/*<Logo src={logoImg} />*/}
+      <Otsikko>Kirjautuminen</Otsikko>
       <Form>
         <Input
           type="username"
@@ -69,9 +70,9 @@ function Login(props) {
           }}
           placeholder="password"
         />
-        <Button onClick={postLogin}>Sign In</Button>
+        <Button onClick={postLogin}>Kirjaudu</Button>
       </Form>
-      <Link to="/signup">Don't have an account?</Link>
+      <Link to="/signup">Et ole rekisteröitynyt vielä?</Link>
       { isError && <Error>The username or password provided were incorrect!</Error> }
     </Card>
   );

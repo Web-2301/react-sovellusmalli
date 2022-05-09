@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import { AuthContext } from "./context/Auth";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import logoImg from "./img/omnia_logo.png";
 import axios from "axios";
 
@@ -34,15 +35,9 @@ function App(props) {
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       {console.log("Provider,authTokens:",authTokens)}
-      <div>
-        {
-        /*<ul>
-          <li><Link to="/">Home Page</Link></li>
-          <li><Link to="/admin">Admin Page</Link></li>
-         </ul>*/
-         }
-        <Navbar/> 
-        <Routes>
+      <div className="container">
+      <Navbar/>
+       <Routes>
           <Route exact path="/" element={<Home/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<Signup/>} />
@@ -50,6 +45,7 @@ function App(props) {
           <Route path="/profiili" element={<Private><Profiili/></Private>}/>
         </Routes>
       </div>
+      <Footer/>
       </AuthContext.Provider>
   );
 }

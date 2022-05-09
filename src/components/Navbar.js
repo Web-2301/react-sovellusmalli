@@ -6,7 +6,8 @@ import {
   Logo,
   MenuButton,
 } from "./Navbar.style";
-import { PrivateLink,PublicLink,CloseButton } from '../PrivateLink'
+import { FaBars,FaTimes } from "react-icons/fa"
+import { PrivateLink,PublicLink,LoginCloseButton } from '../PrivateLink'
 import logoImg from "../img/omnia_logo.png";
 
 function Navbar() {
@@ -19,12 +20,14 @@ function Navbar() {
             <NavLink to="/"> Home</NavLink>
             <PrivateLink to="/Admin">Admin</PrivateLink>
             <PrivateLink to="/Profiili">Profiili</PrivateLink>
-            <CloseButton/>
-            <PublicLink to="/Login">Login</PublicLink>
-        </NavLinks>
-        <MenuButton onClick={() => setOpenMenu(!openMenu)}>
+            <LoginCloseButton/>
+         </NavLinks>
+        {/*<MenuButton onClick={() => setOpenMenu(!openMenu)}>
         {openMenu ? <>&#10005;</> : <>&#8801;</>}
-        </MenuButton>
+        </MenuButton>*/}
+      <MenuButton onClick={() => setOpenMenu(!openMenu)}>
+      {openMenu ? <FaTimes/> : <FaBars/>}
+      </MenuButton>
       </NavBar>
     );
   }

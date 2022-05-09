@@ -5,7 +5,7 @@ export const NavBar = styled.nav`
   width: 100%;
   min-height: 80px;
   height: auto;
-  background-color: black;
+  background-color:#333;
   display: flex;
  `;
 
@@ -44,12 +44,22 @@ export const MenuButton = styled.button`
   background: none;
   border: none;
   color: white;
-  font-size: 45px;
-  font-weight:strong;
+  font-size: 30px;
   cursor: pointer;
   position: absolute;
   right: 0;
   @media (min-width: 700px) {
     display: none;
+  }
+`;
+
+export const Button = styled.button`
+  font-weight:strong;
+  margin-top:10px;
+  @media (min-width: 700px) {
+    margin-top:0;
+    margin-right:20px;
+    position:absolute;
+    right:0;
   }
 `;

@@ -1,7 +1,7 @@
 import React from "react";
-import { Link }  from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "./context/Auth";
-import { NavLink } from "./components/Navbar.style";
+import { NavLink,Button } from "./components/Navbar.style";
 
 export function PrivateLink({ ...rest }) {
   const { authTokens } = useAuth();
@@ -21,14 +21,21 @@ export function PublicLink({ ...rest }) {
     );
   }
 
-export function CloseButton() {
+export function LoginCloseButton() {
     const { authTokens,setAuthTokens } = useAuth();
+    const navigate = useNavigate();
     const logout = () => {
         console.log("Poistu-painike")
         setAuthTokens();
         }
+    const login = () => {
+        navigate('/login');
+        }
+               
     return (
       authTokens ?   
-      <button onClick={logout}>Poistu</button> : ''
+      <Button onClick={logout}>Poistu</Button> : 
+      <Button onClick={login}>Kirjaudu</Button>
     );
   }
+
