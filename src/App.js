@@ -4,6 +4,7 @@ import Private from './PrivateRoute';
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Profiili from "./pages/Profiili";
+import Todolist from "./pages/Todolist";
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import { AuthContext } from "./context/Auth";
@@ -43,6 +44,7 @@ function App(props) {
           <Route path="/signup" element={<Signup/>} />
           <Route path="/admin" element={<Private><Admin/></Private>}/>
           <Route path="/profiili" element={<Private><Profiili/></Private>}/>
+          <Route path="/todolist" element={<Private><Todolist/></Private>}/>
         </Routes>
       </div>
       <Footer/>

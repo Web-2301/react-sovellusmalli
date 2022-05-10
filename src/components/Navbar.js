@@ -20,6 +20,7 @@ function Navbar() {
             <NavLink to="/"> Home</NavLink>
             <PrivateLink to="/Admin">Admin</PrivateLink>
             <PrivateLink to="/Profiili">Profiili</PrivateLink>
+            <PrivateLink to="/Todolist">Todolist</PrivateLink>      
             <LoginCloseButton/>
          </NavLinks>
         {/*<MenuButton onClick={() => setOpenMenu(!openMenu)}>
