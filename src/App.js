@@ -35,8 +35,8 @@ function App(props) {
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       {console.log("Provider,authTokens:",authTokens)}
-      <div className="container">
       <Navbar/>
+      <div className="container">
        <Routes>
           <Route exact path="/" element={<Home/>} />
           <Route path="/login" element={<Login/>} />

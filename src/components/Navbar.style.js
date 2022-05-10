@@ -5,7 +5,8 @@ export const NavBar = styled.nav`
   width: 100%;
   min-height: 80px;
   height: auto;
-  background-color:#333;
+  background: linear-gradient(to bottom, #6371c7, #5563c1);
+  border-bottom: 1px solid #3f4eae;
   display: flex;
  `;
 

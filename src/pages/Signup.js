@@ -29,8 +29,7 @@ function Signup() {
             key,
             {type: "palvelinvirhe",
             message: arvo}
-            )
-          )
+            ))
         }
     }).catch(e => {setError('apiError',{ message:e })})
   }
@@ -38,7 +37,6 @@ function Signup() {
   if (signedUp) {
     return <Navigate to='/login'/>;
   }
-
 
   return (
     <Card>
@@ -75,7 +73,7 @@ function Signup() {
          })}
       />
       {errors.password?.type === 'required' && <Error>Anna salasana</Error>} 
-      {errors.password?.type === 'pattern'  && <Error>Vähintään 8 merkkiä, ainakin yksi numero ja kirjain</Error>} 
+      {errors.password?.type === 'pattern'  && <Error>Vähintään 6 merkkiä, ainakin yksi numero ja kirjain</Error>} 
       {errors.password?.type === 'palvelinvirhe' && <Error>{errors.password.message}</Error>} 
       <Input 
         type="password" 

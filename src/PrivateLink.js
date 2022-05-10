@@ -23,7 +23,7 @@ export function PublicLink({ ...rest }) {
 
 export function LoginCloseButton() {
     const { authTokens,setAuthTokens } = useAuth();
-    const navigate = useNavigate();
+    let navigate = useNavigate();
     const logout = () => {
         console.log("Poistu-painike")
         setAuthTokens();
