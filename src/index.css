@@ -17,7 +17,11 @@ code {
   min-height: 100vh;
   flex-direction: column;
   }
-.container {flex:1;}
+
+.container {
+  flex:1;
+}
+
 footer{
   margin:0 auto;
   padding:10px;

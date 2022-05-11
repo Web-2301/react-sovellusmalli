@@ -3,7 +3,6 @@ import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import AddTodo from './AddTodo';
 import ChangeTodo from './ChangeTodo';
 
-import './App.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import AppBar from '@material-ui/core/AppBar';
@@ -27,15 +26,14 @@ function Todolist() {
   }, [])
 
   const addKeys = (data) => {
-    console.log('data I:',data)
+    //console.log('data I:',data)
     const keys = Object.keys(data);
-    console.log('data I, keys:',keys)
-    console.log('data I, values:',Object.values(data))
+    //console.log('data I, keys:',keys)
+    //console.log('data I, values:',Object.values(data))
     const valueKeys = Object.values(data).map(
       (item, index) => Object.defineProperty(item, 'id', {value: keys[index]})
       );
-    console.log('data II:',valueKeys)
-    //const valueKeys = Object.values(data)
+    //console.log('data II:',valueKeys)
     setTodos(valueKeys);
   }
 
@@ -98,33 +96,31 @@ function Todolist() {
   }
 
   return (
-    <div className="App">
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h5" noWrap>
-            TodoList
-          </Typography>
-        </Toolbar>
-      </AppBar> 
-      <AddTodo addTodo={addTodo}/>
-      <ChangeTodo open={open} handleClose={handleClose}
+    <div style={{ minWidth:725 }}>
+    <AddTodo addTodo={addTodo}/>
+    <ChangeTodo open={open} handleClose={handleClose}
         todo={todo} onChange={onChange} changeTodo={changeTodo}/> 
-      <div className="ag-theme-material" style={ { height: 400, width: 800, margin: 'auto' } }>
-        <AgGridReact rowData={todos}>
+      {/*<div className="ag-theme-material" style={ { height: 400, width: 800, margin: 'auto' } }>*/}
+    <div className="ag-theme-material" style={{width:'100%'}}>
+        <AgGridReact 
+            rowData={todos}  
+            domLayout={'autoHeight'}
+            //suppressHorizontalScroll={true}
+          >
           <AgGridColumn sortable={true} filter={true} field='description' />
           <AgGridColumn sortable={true} filter={true} field='date' />
           <AgGridColumn sortable={true} filter={true} field='priority' />     
           <AgGridColumn 
             headerName=''
             field='id' 
-            width={90}
+            width={120}
             cellRendererFramework={ params => 
             <>
               <IconButton onClick={() => handleUpdate(params.data,params.value)} size="small" color="secondary">
-                <EditIcon />
+                <EditIcon/>
               </IconButton>
               <IconButton onClick={() => deleteTodo(params.value)} size="small" color="secondary">
-                <DeleteIcon />
+                <DeleteIcon/>
               </IconButton>
             </>
             }
@@ -133,7 +129,7 @@ function Todolist() {
         </AgGridReact>
       </div>
     </div>
-  );
+  )
 }
 
 export default Todolist;

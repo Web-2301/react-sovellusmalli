@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 export const NavBar = styled.nav`
   width: 100%;
-  min-height: 80px;
+  min-height: 70px;
   height: auto;
   background: linear-gradient(to bottom, #6371c7, #5563c1);
   border-bottom: 1px solid #3f4eae;
   display: flex;
+  margin-bottom: 10px;
  `;
 
 export const NavLinks = styled.div`
@@ -55,8 +56,8 @@ export const MenuButton = styled.button`
 `;
 
 export const Button = styled.button`
-  font-weight:strong;
   margin-top:10px;
+  min-width:100px;
   @media (min-width: 700px) {
     margin-top:0;
     margin-right:20px;
