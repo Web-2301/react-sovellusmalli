@@ -5,9 +5,6 @@ import ChangeTodo from './ChangeTodo';
 import moment from 'moment'
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -50,13 +47,7 @@ function Todolist() {
     setOpen(false);
     }
 
-  const onChange = (e) => {
-    /* Todo-tilamuuttujaan lisätään id-kenttä */
-    const { value,name } = e.target
-    setTodo({...todo, [name]:value});
-    }
-
-  const fetchItems = () => {
+ const fetchItems = () => {
     fetch(url + '.json')
     .then(response => response.json())
     .then(data => addKeys(data))
@@ -73,27 +64,37 @@ function Todolist() {
     .catch(err => console.error(err))
   }
 
-  const changeTodo = () => {
-    console.log('changeTodo,todo:',todo)
-    const confirm = window.confirm(`Haluatko muuttaa tehtävää ${todo.date}?`);
+  const changeTodo = data => {
+    /* Lomakkeen date-kentästä YYYY-MM-DD,
+       lomakkeen time-kentästä hh:mm */ 
+    console.log('changeTodo,data I:',data)  
+    let t = data.time;
+    t = t.trim().replace('klo','')
+    if (t) data.date += ' ' + t
+    delete data.time   
+    console.log('changeTodo,data II:',data)
+    const confirm = window.confirm(`Muutatko tehtävän ${data.date}?`);
     //let confirm = true;
     confirm && fetch(url + `${todo.id}.json`,{
       method: 'PUT',
-      body: JSON.stringify(todo)
+      body: JSON.stringify(data)
       })
     .then(
-      response => { fetchItems();
-      handleClose();
+      response => { 
+        fetchItems();
+        handleClose();
       })
     .catch(err => console.error(err))
   }
 
   const addTodo = (newTodo) => {
-    let t = (newTodo.time) ? newTodo.time : '00:00'  
-    let dt = newTodo.date + ' ' + t; 
+    /* Lomakkeelta YYYY-MM-DD ja 'hh:mm' */
+    let t = newTodo.time
+    let dt = newTodo.date
+    if (t) dt += ' ' + t; 
     //console.log('addTodo,dt I:',dt)
-    dt = moment(dt).format('YYYY-MM-DD hh:mm:ss')
-    console.log('addTodo,dt II:',dt)
+    // dt = moment(dt).format('YYYY-MM-DD hh:mm:ss')
+    console.log('addTodo,dt:',dt)
     let todo = {...newTodo,['date'] : dt}  
     delete todo.time
     console.log('addTodo:',todo)
@@ -106,22 +107,29 @@ function Todolist() {
   }
 
 const localDateTime = dt => {
-    let d = dt.replace(' klo ',' ')
-    return new Date(d).toLocaleString(undefined, {
+    // let d = dt.replace(' klo ',' ')
+    // dt.padEnd(15, ' 00:00');
+    console.log('dt:',dt)
+    if (dt.length > 10)
+    return new Date(dt).toLocaleString(undefined, {
         day:    'numeric',
         month:  'numeric',
         year:   'numeric',
         hour:   '2-digit',
         minute: '2-digit'
-    });
-  }
-
+    })
+    else 
+    return new Date(dt).toLocaleString(undefined, {
+        day:    'numeric',
+        month:  'numeric',
+        year:   'numeric'
+    })}
 
   return (
     <div style={{ minWidth:725 }}>
     <AddTodo addTodo={addTodo}/>
     <ChangeTodo open={open} handleClose={handleClose}
-        todo={todo} onChange={onChange} changeTodo={changeTodo}/> 
+        todo={todo} changeTodo={changeTodo}/> 
       {/*<div className="ag-theme-material" style={ { height: 400, width: 800, margin: 'auto' } }>*/}
     <div className="ag-theme-material" style={{width:'100%'}}>
         <AgGridReact 

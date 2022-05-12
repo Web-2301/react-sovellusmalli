@@ -1,22 +1,23 @@
 // ChangeTodo.js
 import React, { useEffect } from 'react';
-import moment from 'moment'
+//import moment from 'moment'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Error,SelectS } from './Styled';
+//import MenuItem from '@material-ui/core/MenuItem';
+import { Error,InputS,SelectS } from './Styled';
 import { useForm } from "react-hook-form";
 
 const options = ['','Matala','Keskiverto','Korkea']
 //moment.locale('fi')
 
-function ChangeTodo({open,handleClose,todo,onChange,changeTodo}) {
+function ChangeTodo({open,handleClose,todo,changeTodo}) {
   const {date,description,id,priority} = todo;
   console.log(`ChangeTodo,date:${date},priority:${priority}`)
+  /* Tietokannasta YYYY-MM-DD mm:hh:00 */
   let pvm,t,dt = date;
   [pvm,t] = dt.split(" ");
   console.log(`ChangeTodo,date:${pvm},time:${t}`)
@@ -44,7 +45,7 @@ function ChangeTodo({open,handleClose,todo,onChange,changeTodo}) {
   
   }, [todo]);
 
-  return(
+ return(
     <div>
      <Dialog open={open} onClose={handleClose}>
        <DialogTitle>Change todo</DialogTitle>
@@ -99,7 +100,7 @@ function ChangeTodo({open,handleClose,todo,onChange,changeTodo}) {
       </DialogContent>
       <DialogActions>
          <Button color="secondary" variant="outlined" onClick={handleClose}>Cancel</Button>
-         <Button color="primary"variant="outlined" onClick={()=>changeTodo()}>Save</Button>
+         <Button color="primary"variant="outlined" onClick={handleSubmit(data => changeTodo(data))}>Save</Button>
       </DialogActions>
      </Dialog> 
     </div>
