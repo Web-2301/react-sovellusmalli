@@ -13,9 +13,9 @@ import { Error,InputS,SelectS,Button as ButtonS } from './Styled';
 import { Form, Input, Button as ButtonR, 
   Modal, ModalFooter,
   ModalHeader, ModalBody } from 'reactstrap';
-import { useForm,Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
-const initialValue = { description: '', date: '', priority: '' }
+const initialValue = { description: '', date: '', time: '', priority: '' }
 const options = ['','Matala','Keskiverto','Korkea']
 
 function AddTodo(props) {
@@ -24,20 +24,20 @@ function AddTodo(props) {
   const [openS, setOpenS] = useState(false);
   const [openR, setOpenR] = useState(false);
   //const [todo, setTodo] = useState(initialValue);
-  const { register, handleSubmit, reset, setValue, watch, control, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, setValue, watch, control, formState: { errors } } = useForm(initialValue);
   const { 
     register:registerS, 
     handleSubmit:handleSubmitS, 
     reset:resetS, 
     watch:watchS, 
-    formState: { errors:errorsS } } = useForm();
+    formState: { errors:errorsS } } = useForm(initialValue);
 
   const { 
     register:registerR, 
     handleSubmit:handleSubmitR, 
     reset:resetR, 
     watch:watchR, 
-    formState: { errors:errorsR } } = useForm();
+    formState: { errors:errorsR } } = useForm(initialValue);
 
     const defaultValues = {
       description: "",
@@ -66,7 +66,7 @@ function AddTodo(props) {
 
   const handleEmpty = () => {
     resetR();
-    resetS();
+    resetS(defaultValues);
     reset(defaultValues);
     //setValue("priority", "");
     }

@@ -56,11 +56,15 @@ const Error = styled.div`
   font-size: 0.8rem;
 `;
 
+const Option = styled.option`
+  font-size: 1rem;
+`;
+
 function SelectS({ register, options, name, ...rest }) {
   return (
     <Select {...register(name)} {...rest}>
       {options.map((value) => (
-        <option value={value}>{value}</option>
+        <Option value={value}>{value}</Option>
       ))}
     </Select>
   );

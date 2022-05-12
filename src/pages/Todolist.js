@@ -3,7 +3,6 @@ import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import AddTodo from './AddTodo';
 import ChangeTodo from './ChangeTodo';
 import moment from 'moment'
-
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import AppBar from '@material-ui/core/AppBar';
@@ -65,7 +64,8 @@ function Todolist() {
   }
 
   const deleteTodo = (id) => {
-    const confirm = window.confirm("Are you sure, you want to delete this row?");
+    //const confirm = window.confirm("Are you sure, you want to delete this row?");
+    let confirm = true;
     confirm && fetch(url + `${id}.json`,{
       method: 'DELETE',
       })
@@ -74,8 +74,9 @@ function Todolist() {
   }
 
   const changeTodo = () => {
-    console.log('todo:',todo)
-    const confirm = window.confirm("Are you sure, you want to update this row?");
+    console.log('changeTodo,todo:',todo)
+    const confirm = window.confirm(`Haluatko muuttaa tehtävää ${todo.date}?`);
+    //let confirm = true;
     confirm && fetch(url + `${todo.id}.json`,{
       method: 'PUT',
       body: JSON.stringify(todo)
