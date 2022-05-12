@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Grid, Button } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -11,7 +13,7 @@ import { Error,InputS,SelectS,Button as ButtonS } from './Styled';
 import { Form, Input, Button as ButtonR, 
   Modal, ModalFooter,
   ModalHeader, ModalBody } from 'reactstrap';
-import { useForm } from "react-hook-form";
+import { useForm,Controller } from "react-hook-form";
 
 const initialValue = { description: '', date: '', priority: '' }
 const options = ['','Matala','Keskiverto','Korkea']
@@ -22,11 +24,30 @@ function AddTodo(props) {
   const [openS, setOpenS] = useState(false);
   const [openR, setOpenR] = useState(false);
   //const [todo, setTodo] = useState(initialValue);
+  const { register, handleSubmit, reset, setValue, watch, control, formState: { errors } } = useForm();
+  const { 
+    register:registerS, 
+    handleSubmit:handleSubmitS, 
+    reset:resetS, 
+    watch:watchS, 
+    formState: { errors:errorsS } } = useForm();
 
-  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
+  const { 
+    register:registerR, 
+    handleSubmit:handleSubmitR, 
+    reset:resetR, 
+    watch:watchR, 
+    formState: { errors:errorsR } } = useForm();
+
+    const defaultValues = {
+      description: "",
+      date: "",
+      time: "",
+      priority: ""
+    };
+ 
   console.log(watch("description"));
   
-
   const handleOpen = () => {
     setOpen(true)
     }
@@ -44,10 +65,14 @@ function AddTodo(props) {
     }
 
   const handleEmpty = () => {
-    reset();
+    resetR();
+    resetS();
+    reset(defaultValues);
+    //setValue("priority", "");
     }
   
-  const handleSave = (data) => {
+  const handleSave = data => {
+    console.log('handleSave:',data)
     props.addTodo(data);
     handleClose();
     }
@@ -65,13 +90,14 @@ function AddTodo(props) {
     reset({[event.target.name]:event.target.value})*/
   }
 
-  var {ref, ...description} = register('description', { required: true });
-  const refDescription = ref;
-  var {ref, ...date} = register('date', { required: true })
-  const refDate = ref;
-  var {ref, ...priority} = register('priority', { required: true })
-  const refPriority = ref;
-
+  var {ref, ...description} = registerR('description', { required: true });
+  let refDescription = ref;
+  var {ref, ...date} = registerR('date', { required: true })
+  let refDate = ref;
+  var {ref, ...time} = registerR('time')
+  let refTime = ref;
+  var {ref, ...priority} = registerR('priority', { required: true })
+  let refPriority = ref;
   return(
     <div>
     <Grid align="center">
@@ -89,30 +115,66 @@ function AddTodo(props) {
     <Dialog open={open}>
        <DialogTitle>New todo Material-UI</DialogTitle>
        <DialogContent>
-       <form onSubmit={handleSubmit(handleSave)}>
+       <form key={1}>
          <TextField
-            {...register("description", { required: true })}
+            {...register("description", { 
+              required: true,
+              validate: value => !value.match(/(<([^>]+)>)/ig) 
+            })}
             placeholder="Description"
             variant="outlined"
             margin="dense"
             fullWidth
           /> 
-          {errors.description && <Error>This field is required</Error>} 
+          {errors.description?.type === 'required' && <Error>This field is required</Error>} 
+          {errors.description?.type === 'validate' && <Error>Luvattomia merkkejä</Error>} 
          <TextField
             {...register("date", { required: true })}
             placeholder="Date"
+            type="date"
             variant="outlined"
             margin="dense"
             fullWidth
          />
         {errors.date && <Error>This date field is required</Error>} 
         <TextField
+            {...register("time")}
+            placeholder="Date"
+            type="time"
+            variant="outlined"
+            margin="dense"
+            fullWidth
+         />
+      
+        {/*<TextField
            {...register("priority", { required: true })}
            placeholder="Priority"
            variant="outlined"
            margin="dense"
            fullWidth
-         /> 
+  /> */}
+
+    {/* Huom. Material UI:n Select-arvon asetus esim. 
+    reset()-funktiolla ei muuta näkyvää Select-valintaa
+    Material-UI:n Dialogissa, vaikka arvo muuttuukin. 
+    Esim. arvon tyhjentäminen tuottaa validointivirheen,  
+    vaikka näytössä pysyy aikaisempi valinta. */}
+    <Select
+        {...register("priority", { required: true })}
+        variant="outlined"
+        margin="dense"
+        fullWidth
+        defaultValue= ""
+        style={{marginTop:10}}>
+        {options.map(value => 
+        <MenuItem key={value} value={value}>{value}</MenuItem>
+        )}  
+        </Select>
+    {errors.priority && <Error>Valitse tärkeys</Error>} 
+
+    
+   
+
     </form>
       </DialogContent>
       <DialogActions>
@@ -123,70 +185,85 @@ function AddTodo(props) {
     </Dialog> 
 
     <Dialog open={openS}>
-       <DialogTitle>New todo Styled</DialogTitle>
-       <DialogContent>
-       <form onSubmit={handleSubmit(handleSave)}>
+      <DialogTitle>New todo Styled</DialogTitle>
+      <DialogContent>
+      <form key={2}>
          <InputS
-            {...register("description", { required: true })}
+            {...registerS("description", { required: true })}
             placeholder="Description"
           /> 
-          {errors.description && <Error>Description field is required</Error>} 
+          {errorsS.description && <Error>Description field is required</Error>} 
          <InputS
-            {...register("date", { required: true })}
+            {...registerS("date", { required: true })}
             placeholder='Date'
             type='date'
          />
-        {errors.date && <Error>Date field is required</Error>} 
+        {errorsS.date && <Error>Date field is required</Error>} 
+        <InputS
+            {...registerS("time", { required: true })}
+            placeholder='Time'
+            type='time'
+        />
         {/*<InputS options={options}
           {...register("priority", { required: true })}
            placeholder="Priority"
         />*/}
 
         <SelectS 
-          register={register} 
+          register={registerS} 
           options={options} 
           name='priority'
           //validation={ {required: true} }
     
         />
-        {errors.priority?.type === 'required' && <Error>Priority field is required</Error>}     
+        {errorsS.priority?.type === 'required' && <Error>Priority field is required</Error>}     
       </form>
       </DialogContent>
       <DialogActions>
         <ButtonS color="secondary" variant="outlined" onClick={handleEmpty}>Tyhjennä</ButtonS>
         <ButtonS color="secondary" variant="outlined" onClick={handleClose}>Cancel</ButtonS>
-        <ButtonS color="primary" variant="outlined" onClick={handleSubmit(handleSave)}>Save</ButtonS>
+        <ButtonS color="primary" variant="outlined" onClick={handleSubmitS(handleSave)}>Save</ButtonS>
       </DialogActions>
      </Dialog> 
 
      <Modal isOpen={openR}>
        <ModalHeader>New todo Reactstrap</ModalHeader>
        <ModalBody>
-       <form>
+       <form key={3}>
          <Input
             innerRef={refDescription}
             {...description}    
             placeholder="Description"
           /> 
-          {errors.description && <Error>Description field is required</Error>} 
+          {errorsR.description && <Error>Description field is required</Error>} 
          <Input
+           style={{marginTop:10}}
            innerRef={refDate}
            {...date}
-           placeholder='Date'
+           type='date'
          />
-        {errors.date && <Error>Date field is required</Error>} 
+        {errorsR.date && <Error>Date field is required</Error>} 
         <Input
-           innerRef={refPriority}
-           {...priority}
-           placeholder="Priority"
-         /> 
-         {errors.priority && <Error>Priority field is required</Error>}  
+           style={{marginTop:10}}
+           innerRef={refTime}
+           {...time}
+           type='time'
+         />
+        <Input type='select'
+          style={{marginTop:10}}
+          innerRef={refPriority}
+          {...priority}
+          >
+          {options.map(value => 
+            <option value={value}>{value}</option>)}
+        </Input>
+        {errorsR.priority && <Error>Priority field is required</Error>}  
     </form>
       </ModalBody>
       <ModalFooter>
         <ButtonR color="secondary" variant="outlined" onClick={handleEmpty}>Tyhjennä</ButtonR>
         <ButtonR color="secondary" variant="outlined" onClick={handleClose}>Cancel</ButtonR>
-        <ButtonR color="primary" variant="outlined" onClick={handleSubmit(handleSave)}>Save</ButtonR>
+        <ButtonR color="primary" variant="outlined" onClick={handleSubmitR(handleSave)}>Save</ButtonR>
       </ModalFooter>
      </Modal> 
 

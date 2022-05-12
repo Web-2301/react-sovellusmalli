@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import AddTodo from './AddTodo';
 import ChangeTodo from './ChangeTodo';
+import moment from 'moment'
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
@@ -87,13 +88,33 @@ function Todolist() {
   }
 
   const addTodo = (newTodo) => {
+    let t = (newTodo.time) ? newTodo.time : '00:00'  
+    let dt = newTodo.date + ' ' + t; 
+    //console.log('addTodo,dt I:',dt)
+    dt = moment(dt).format('YYYY-MM-DD hh:mm:ss')
+    console.log('addTodo,dt II:',dt)
+    let todo = {...newTodo,['date'] : dt}  
+    delete todo.time
+    console.log('addTodo:',todo)
     fetch(url + '.json',{
       method: 'POST',
-      body: JSON.stringify(newTodo)
+      body: JSON.stringify(todo)
     })
     .then(response => fetchItems())
     .catch(err => console.error(err))
   }
+
+const localDateTime = dt => {
+    let d = dt.replace(' klo ',' ')
+    return new Date(d).toLocaleString(undefined, {
+        day:    'numeric',
+        month:  'numeric',
+        year:   'numeric',
+        hour:   '2-digit',
+        minute: '2-digit'
+    });
+  }
+
 
   return (
     <div style={{ minWidth:725 }}>
@@ -108,7 +129,12 @@ function Todolist() {
             //suppressHorizontalScroll={true}
           >
           <AgGridColumn sortable={true} filter={true} field='description' />
-          <AgGridColumn sortable={true} filter={true} field='date' />
+          <AgGridColumn 
+          sortable={true} 
+          filter={true} 
+          field='date'
+          valueGetter={p => localDateTime(p.data.date)}
+           />
           <AgGridColumn sortable={true} filter={true} field='priority' />     
           <AgGridColumn 
             headerName=''

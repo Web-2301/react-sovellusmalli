@@ -19,7 +19,7 @@ const Form = styled.div`
 const InputS = styled.input`
   padding: 1rem;
   border: 1px solid #999;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
   font-size: 0.8rem;
   width: 90%;
 `;
@@ -27,7 +27,7 @@ const InputS = styled.input`
 const Select = styled.select`
   padding: 1rem;
   border: 1px solid #999;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
   font-size: 0.8rem;
   width: 90%;
 `;
@@ -52,6 +52,8 @@ const Logo = styled.img`
 
 const Error = styled.div`
   color: red;
+  margin-top: 2px;
+  font-size: 0.8rem;
 `;
 
 function SelectS({ register, options, name, ...rest }) {
