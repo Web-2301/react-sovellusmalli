@@ -17,7 +17,12 @@ const options = ['','Matala','Keskiverto','Korkea']
 function ChangeTodo({open,handleClose,todo,changeTodo}) {
   const {date,description,id,priority} = todo;
   console.log(`ChangeTodo,date:${date},priority:${priority}`)
-  /* Tietokannasta YYYY-MM-DD mm:hh:00 */
+  /* Tietokannasta date muodossa YYYY-MM-DD hh:mm. 
+  Ag-gridin paikallinen listausnäkymä ei vaikuta kentän arvoon,
+  joten sen muoto sopii date- ja time-tyyppisiin HTML-elementteihin. 
+  Huom. 00:00-minuuttilukemaa ei näytetä. Se näkyisi Firefoxissa
+  kellonaikana 12:00 (engl.) ja toisaalta tyhjä minuuttilukema näkyis
+  kello 03:00 (engl. ja toLocaleString(), ks. katkaisu Todolist.js). */
   let pvm,t,dt = date;
   [pvm,t] = dt.split(" ");
   console.log(`ChangeTodo,date:${pvm},time:${t}`)
