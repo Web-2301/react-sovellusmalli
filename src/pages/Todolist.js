@@ -125,6 +125,12 @@ const localDateTime = dt => {
         year:   'numeric'
     })}
 
+  const dateComparator = (date1,date2,dateA,dateB,isInverted) => {
+      /* Huom. nousevan ja laskevan välissä ei valintaa */
+      // console.log(`${dateB.data.date} > ${dateA.data.date}?`)
+      return dateA.data.date > dateB.data.date ? 1 : -1
+      }   
+
   return (
     <div style={{ minWidth:725 }}>
     <AddTodo addTodo={addTodo}/>
@@ -143,6 +149,8 @@ const localDateTime = dt => {
           filter={true} 
           field='date'
           valueGetter={p => localDateTime(p.data.date)}
+          comparator={dateComparator}
+
            />
           <AgGridColumn sortable={true} filter={true} field='priority' />     
           <AgGridColumn 
