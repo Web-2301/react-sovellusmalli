@@ -16,7 +16,7 @@ const options = ['','Matala','Keskiverto','Korkea']
 
 function ChangeTodo({open,handleClose,todo,changeTodo}) {
   const {date,description,id,priority} = todo;
-  console.log(`ChangeTodo,date:${date},priority:${priority}`)
+  // console.log(`ChangeTodo,date:${date},priority:${priority}`)
   /* Tietokannasta date muodossa YYYY-MM-DD hh:mm. 
   Ag-gridin paikallinen listausnäkymä ei vaikuta kentän arvoon,
   joten sen muoto sopii date- ja time-tyyppisiin HTML-elementteihin. 
@@ -32,8 +32,8 @@ function ChangeTodo({open,handleClose,todo,changeTodo}) {
     time:t,
     priority
   }
-  console.log('todo:',{...todo})
-  console.log('initialValue:',{...initialValue})
+  // console.log('todo:',{...todo})
+  // console.log('initialValue:',{...initialValue})
   const { register, handleSubmit, reset, setValue, watch, control, formState: { errors } } = useForm();
   
   useEffect(() => {
