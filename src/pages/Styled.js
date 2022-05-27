@@ -32,6 +32,10 @@ const Select = styled.select`
   width: 90%;
 `;
 
+const CheckboxS = styled.input.attrs({ type: 'checkbox' })`
+font-size: 0.8rem;
+`;
+
 const Button = styled.button`
   background: ${props => props.color == "primary" ? "linear-gradient(to bottom, #6371c7, #5563c1)" : "grey"};
   color: ${props => props.color == "primary" ? "white" : "palevioletred"};
@@ -71,4 +75,4 @@ function SelectS({ register, options, name, ...rest }) {
 }
 
 
-export { Form, InputS, SelectS, Button, Logo, Card, Error };
+export { Form, InputS, CheckboxS, SelectS, Button, Logo, Card, Error };
