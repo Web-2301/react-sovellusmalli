@@ -13,7 +13,7 @@ mahdollisesti sillä, että react-hook-form tai ag-grid renderöi
 checkboxin käyttäen sen defaultChecked-arvoa, ellei se ole null tai
 false.
 
-Tässä tietokantahaun jälkeen kolmas renderöinti listaa checkboxit.
+Tässä tietokantahaun jälkeen toinen renderöinti listaa checkboxit.
 */
 import React, { useState, useEffect, useRef } from 'react';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
@@ -40,25 +40,30 @@ function Todolist() {
   /* Muutoslomakkeet tilamuuttujat */
   const [open, setOpen] = useState(false);
   const [todo, setTodo] = useState(initialValue);
-  const dci = useRef(0);
+  const dc = useRef(true);
+  // const dci = useRef(0);
 
   useEffect(() => {
     fetchItems();
-    console.log(`useEffect,dci:${dci.current}`)
+    console.log(`useEffect,dc:${dc.current}`)
   }, [])
 
- if (todos) {
-   dci.current += 1;
-   console.log(`todos,dci:${dci.current}`)
- }
+ // if (Array.isArray(todos) && todos.length) {
+   // dci.current += 1;
+   // if (dc.current !== false) dc.current = true
+   // console.log(`todos,dci:${dci.current}`)
+ // }
+ // else dci.current += 1;
 
- let dcset = dci.current == 3 
+ // console.log(`todolist,dc:${dc.current}`)
+ // let dcset = dci.current == 2
+ // let dcset = dc.current 
  function Checkbox({checked,i}) {
-   console.log(`Checkbox[${i}]:${dci.current},${checked}`)
+   console.log(`Checkbox[${i}]:${dc.current},${checked}`)
    return (
       <input type='checkbox' 
       {...register(`checkboxes.${i}`)}
-       defaultChecked={ dcset ? checked : null }
+       defaultChecked={ dc.current ? checked : null }
        size='small'>
       </input>
       )
@@ -175,7 +180,6 @@ function Todolist() {
       }   
 
   const activateTodo = (id,data) => {
-  
         /* Päivitä tietokannan todo */
         // console.log(`activateTodo:${id}:${activate}`) 
         // let data = todos.find(e => e.id === id);
@@ -191,7 +195,10 @@ function Todolist() {
         .catch(err => console.error(err))
       }
 
-    const handleSave = data => {
+    const handleSave = (data,e) => {
+        // dc.current = false
+        // e.preventDefault();
+        console.log("handleSave,e:",e)
         console.log("handleSave,getValues:",JSON.stringify(getValues()))
         // let uusiTodos = { ...todos }
         data.lista.map((t,i) => {
@@ -204,8 +211,12 @@ function Todolist() {
             }) 
         // console.log("uusiTodos:",uusiTodos)
         // setTodos(uusiTodos)
-        // setDc(false)
         }    
+
+    const handleClick = e => {
+        dc.current = false
+        console.log("handleClick:",dc.current)
+        }        
 
     const check = c => {
       console.log(`checkbox[${c.id}]:${c.data.activate}`)
@@ -247,10 +258,7 @@ function Todolist() {
             headerName='Active'
             width={110}
             cellRendererFramework={ p => 
-              
-
               <Checkbox checked={p.value} i={p.node.id}></Checkbox>
-              
               }
             />     
           <AgGridColumn 
@@ -277,16 +285,13 @@ function Todolist() {
 
         <Box display="flex" justifyContent="flex-end">
         <Button 
+          onClick={handleClick}
           type="submit"
           style={{margin:10}} 
           variant="contained" 
           color="primary">Tallenna</Button>
         </Box>
-
-
       </form> 
-
-
       </div>
     </div>
   )

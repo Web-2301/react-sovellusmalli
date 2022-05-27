@@ -46,7 +46,7 @@ function AddTodo(props) {
       priority: ""
     };
  
-  console.log(watch("description"));
+  // console.log(watch("description"));
   
   const handleOpen = () => {
     setOpen(true)
