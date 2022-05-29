@@ -115,7 +115,7 @@ function AddTodo(props) {
     <Dialog open={open}>
        <DialogTitle>New todo Material-UI</DialogTitle>
        <DialogContent>
-       <form key={1}>
+       <form>
          <TextField
             {...register("description", { 
               required: true,
@@ -171,23 +171,19 @@ function AddTodo(props) {
         )}  
         </Select>
     {errors.priority && <Error>Valitse tärkeys</Error>} 
-
-    
-   
-
     </form>
-      </DialogContent>
-      <DialogActions>
+    </DialogContent>
+    <DialogActions>
          <Button color="secondary" variant="outlined" onClick={handleEmpty}>Tyhjennä</Button>
          <Button color="secondary" variant="outlined" onClick={handleClose}>Peruuta</Button>
          <Button color="primary" variant="outlined" onClick={handleSubmit(handleSave)}>Lisää</Button>
-      </DialogActions>
+    </DialogActions>
     </Dialog> 
 
     <Dialog open={openS}>
       <DialogTitle>New todo Styled</DialogTitle>
       <DialogContent>
-      <form key={2}>
+      <form>
          <InputS
             {...registerS("description", { required: true })}
             placeholder="Description"
@@ -214,7 +210,6 @@ function AddTodo(props) {
           options={options} 
           name='priority'
           //validation={ {required: true} }
-    
         />
         {errorsS.priority?.type === 'required' && <Error>Priority field is required</Error>}     
       </form>
@@ -229,7 +224,7 @@ function AddTodo(props) {
      <Modal isOpen={openR}>
        <ModalHeader>New todo Reactstrap</ModalHeader>
        <ModalBody>
-       <form key={3}>
+       <form>
          <Input
             innerRef={refDescription}
             {...description}    
@@ -255,7 +250,7 @@ function AddTodo(props) {
           {...priority}
           >
           {options.map(value => 
-            <option value={value}>{value}</option>)}
+            <option key={value} value={value}>{value}</option>)}
         </Input>
         {errorsR.priority && <Error>Priority field is required</Error>}  
     </form>

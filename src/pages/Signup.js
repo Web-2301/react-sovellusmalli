@@ -1,6 +1,6 @@
 import React, { useState,useRef } from "react";
 import { Link, Navigate } from 'react-router-dom';
-import logoImg from "../img/omnia_logo.png";
+// import logoImg from "../img/omnia_logo.png";
 import { Card, Otsikko, Logo, Form, Input, Button, Error } from '../components/AuthForm';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
@@ -51,7 +51,7 @@ function Signup() {
           pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
          })}
       /> 
-      {errors.email?.type === 'required' && <Error>Anna sähköpostiosoite</Error>} 
+      {errors.email?.type === 'required' && <Error>Anna sähköpostiosoite</Error>}
       {errors.email?.type === 'pattern'  && <Error>Virheellinen sähköpostiosoite</Error>}
       {errors.email?.type === 'palvelinvirhe' && <Error>{errors.email.message}</Error>} 
       <Input 

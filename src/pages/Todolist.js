@@ -19,21 +19,21 @@ import React, { useState, useEffect, useRef } from 'react';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import AddTodo from './AddTodo';
 import ChangeTodo from './ChangeTodo';
-import moment from 'moment'
+// import moment from 'moment'
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Box,Checkbox,Button } from "@material-ui/core";
-import { CheckboxS } from './Styled';
-import { useForm,useFieldArray } from "react-hook-form";
+// import { CheckboxS } from './Styled';
+import { useForm } from "react-hook-form";
 
 const url = 'https://react-bookstore-omnia-default-rtdb.europe-west1.firebasedatabase.app/items/';
 const initialValue = { description: '', date: '', priority: '', active: false }
 
 function Todolist() {
-  const { register, handleSubmit, reset, setValue, getValues,watch, control, formState: { errors } } = useForm();
+  const { register, handleSubmit, getValues } = useForm();
   //const { fields } = useFieldArray({ name: "lista" });
   //const { fields } = useFieldArray({ control,name: "checkboxes" });
 
@@ -209,25 +209,26 @@ function Todolist() {
             // activateTodo(t,data.checkboxes[i],i);
             activateTodo(t,todo);
             // uusiTodos[i] = todo;
+            return null
             }) 
         // console.log("uusiTodos:",uusiTodos)
         // setTodos(uusiTodos)
         }    
 
-    const handleClick = e => {
+    const handleClick = () => {
         dc.current = false
         console.log("handleClick:",dc.current)
         }        
 
-    const handleOnClick = e => {
+    /* const handleOnClick = e => {
         console.log("handleOnClick:",e.target.checked)
-        }         
+        } */        
 
 
-    const check = c => {
+    /* const check = c => {
       console.log(`checkbox[${c.id}]:${c.data.activate}`)
       return c.value
-      }      
+      } */     
 
  return (
     <div style={{ minWidth:725,display:'table' }}>
@@ -238,33 +239,35 @@ function Todolist() {
     <div className="ag-theme-material" style={{width:'100%'}}>
     <form onSubmit={handleSubmit(handleSave)}>
         <AgGridReact 
-            rowData={todos}  
-            domLayout={'autoHeight'}
-            suppressHorizontalScroll={true}
+          rowData={todos}  
+          domLayout={'autoHeight'}
+          suppressHorizontalScroll={true}
           >
-          <AgGridColumn sortable={true} filter={true} field='description' />
+          <AgGridColumn 
+          sortable={true} 
+          filter={true} 
+          field='description'
+          />
           <AgGridColumn 
           sortable={true} 
           filter={true} 
           field='date'
           valueGetter={p => localDateTime(p.data.date)}
           comparator={dateComparator}
-
-           />
+          />
           <AgGridColumn 
-            sortable={true} 
-            filter={true} 
-            field='priority' 
-            width={120}
-            /> 
+          sortable={true} 
+          filter={true} 
+          field='priority' 
+          width={120}
+          /> 
           <AgGridColumn 
-            sortable={true} 
-            filter={true} 
-            field='activate' 
-            headerName='Active'
-            width={110}
-            cellRendererFramework={ p => 
-            
+          sortable={true} 
+          filter={true} 
+          field='activate' 
+          headerName='Active'
+          width={110}
+          cellRenderer={ p => 
             /* raaka */  
             /*<input type='checkbox' 
              {...register(`checkboxes.${p.node.id}`)}
@@ -289,37 +292,37 @@ function Todolist() {
             {...register(`checkboxes.${p.node.id}`)}
             defaultChecked={ p.value }
             >
-          </Checkbox>
+            </Checkbox>
             }
-            />     
+          />     
           <AgGridColumn 
-            headerName=''
-            field='id' 
-            width={120}
-            cellRendererFramework={p => 
+          headerName=''
+          field='id' 
+          width={120}
+          cellRenderer={p => 
             <>
-              <input 
-                type='hidden' 
-                value={p.value}
-                {...register(`lista.${p.node.id}`)} 
-              />
-              <IconButton onClick={() => handleUpdate(p.data,p.value)} size="small" color="secondary">
-                <EditIcon/>
-              </IconButton>
-              <IconButton onClick={() => deleteTodo(p.value)} size="small" color="secondary">
-                <DeleteIcon/>
-              </IconButton>
+            <input 
+              type='hidden' 
+              value={p.value}
+              {...register(`lista.${p.node.id}`)} 
+            />
+            <IconButton onClick={() => handleUpdate(p.data,p.value)} size="small" color="secondary">
+              <EditIcon/>
+            </IconButton>
+            <IconButton onClick={() => deleteTodo(p.value)} size="small" color="secondary">
+              <DeleteIcon/>
+            </IconButton>
             </>
             }
           />      
         </AgGridReact>
 
-        <Box display="flex" justifyContent="flex-end">
+        <Box align="right">
         <Button 
           onClick={handleClick}
           type="submit"
           style={{margin:10}} 
-          variant="contained" 
+          variant="contained"
           color="primary">Tallenna</Button>
         </Box>
       </form> 
