@@ -9,11 +9,12 @@ arvoon null muulloin.
 Ilman tätä menettelyä tyhjäksi vaihdettu checkbox
 päivittyisi heti takaisin ruksatuksi tallennuksen yhteydessä, vaikka
 valinta tallentuisi tietokantaan oikein. Tämä selittyy
-mahdollisesti sillä, että react-hook-form tai ag-grid renderöi
+mahdollisesti sillä, että react-hook-form renderöi
 checkboxin käyttäen sen defaultChecked-arvoa, ellei se ole null tai
 false.
 
-Tässä tietokantahaun jälkeen toinen renderöinti listaa checkboxit.
+Huom. React-hook-form renderöi komponentin ennen ja jälkeen lomakkeen
+handleSubmit-kutsun.
 */
 import React, { useState, useEffect, useRef } from 'react';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
