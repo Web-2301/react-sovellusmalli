@@ -29,6 +29,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import { Box,Checkbox,Button } from "@material-ui/core";
 // import { CheckboxS } from './Styled';
 import { useForm } from "react-hook-form";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Input } from 'reactstrap';
+
 
 const url = 'https://react-bookstore-omnia-default-rtdb.europe-west1.firebasedatabase.app/items/';
 const initialValue = { description: '', date: '', priority: '', active: false }
@@ -44,6 +47,13 @@ function Todolist() {
   const [todo, setTodo] = useState(initialValue);
   const dc = useRef(true);
   // const dci = useRef(0);
+
+  const registerInnerRef = (n,...loput) => {
+    let {ref,...rest} = register(n,...loput);
+    let innerRef = ref;
+    //console.log('innerRef:',innerRef,'rest:',rest);
+    return {innerRef,...rest}
+    }
 
   useEffect(() => {
     fetchItems();
@@ -294,6 +304,16 @@ function Todolist() {
             defaultChecked={ p.value }
             >
             </Checkbox>
+
+            /* Reactstrap-komponentti */  
+            /*<Input
+            style={{verticalAlign:'middle'}}
+            type='checkbox'
+            {...registerInnerRef(`checkboxes.${p.node.id}`)}
+            defaultChecked={ p.value }
+            />*/
+            
+
             }
           />     
           <AgGridColumn 

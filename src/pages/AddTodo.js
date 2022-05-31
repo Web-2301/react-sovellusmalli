@@ -19,7 +19,6 @@ const initialValue = { description: '', date: '', time: '', priority: '' }
 const options = ['','Matala','Keskiverto','Korkea']
 
 function AddTodo(props) {
-
   const [open, setOpen] = useState(false);
   const [openS, setOpenS] = useState(false);
   const [openR, setOpenR] = useState(false);
@@ -90,14 +89,25 @@ function AddTodo(props) {
     reset({[event.target.name]:event.target.value})*/
   }
 
+  const registerInnerRef = (n,...loput) => {
+    let {ref,...rest} = registerR(n,...loput);
+    let innerRef = ref;
+    //console.log('innerRef:',innerRef,'rest:',rest);
+    return {innerRef,...rest}
+    }
+  
+  /* 
   var {ref, ...description} = registerR('description', { required: true });
   let refDescription = ref;
+  console.log('ref:',ref,'description:',description);
   var {ref, ...date} = registerR('date', { required: true })
   let refDate = ref;
   var {ref, ...time} = registerR('time')
   let refTime = ref;
   var {ref, ...priority} = registerR('priority', { required: true })
   let refPriority = ref;
+  */
+
   return(
     <div>
     <Grid align="center">
@@ -226,28 +236,31 @@ function AddTodo(props) {
        <ModalBody>
        <form>
          <Input
-            innerRef={refDescription}
-            {...description}    
+            //innerRef={refDescription}
+            {...registerInnerRef('description',{ required: true })}
             placeholder="Description"
           /> 
           {errorsR.description && <Error>Description field is required</Error>} 
          <Input
            style={{marginTop:10}}
-           innerRef={refDate}
-           {...date}
+           //innerRef={refDate}
+           //{...date}
+           {...registerInnerRef('date',{ required: true })}
            type='date'
          />
         {errorsR.date && <Error>Date field is required</Error>} 
         <Input
            style={{marginTop:10}}
-           innerRef={refTime}
-           {...time}
+           //innerRef={refTime}
+           //{...time}
+           {...registerInnerRef('time')}
            type='time'
          />
         <Input type='select'
           style={{marginTop:10}}
-          innerRef={refPriority}
-          {...priority}
+          //innerRef={refPriority}
+          //{...priority}
+          {...registerInnerRef('priority',{ required: true })}
           >
           {options.map(value => 
             <option key={value} value={value}>{value}</option>)}
