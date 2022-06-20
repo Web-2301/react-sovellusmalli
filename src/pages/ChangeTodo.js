@@ -45,11 +45,10 @@ function ChangeTodo({open,handleClose,todo,changeTodo}) {
     setValue('date',d[0])
     setValue('time',d[1])
     setValue('priority',todo.priority)*/
-    reset(initialValue)
-    //setValue('priority',todo.priority)
-  
+    reset(initialValue) 
   }, [todo]);
 
+ if (!open) return null; 
  return(
     <div>
      <Dialog open={open} onClose={handleClose}>

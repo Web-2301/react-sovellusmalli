@@ -14,7 +14,9 @@ checkboxin käyttäen sen defaultChecked-arvoa, ellei se ole null tai
 false.
 
 Huom. React-hook-form renderöi komponentin ennen ja jälkeen lomakkeen
-handleSubmit-kutsun.
+handleSubmit-kutsun. 
+
+Huom. React.StrictMode aiheuttaa renderöimisen kahteen kertaan.
 */
 import React, { useState, useEffect, useRef } from 'react';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
@@ -37,10 +39,9 @@ const url = 'https://react-bookstore-omnia-default-rtdb.europe-west1.firebasedat
 const initialValue = { description: '', date: '', priority: '', active: false }
 
 function Todolist() {
+  console.log('rendering Todolist')
   const { register, handleSubmit, getValues } = useForm();
-  //const { fields } = useFieldArray({ name: "lista" });
   //const { fields } = useFieldArray({ control,name: "checkboxes" });
-
   const [todos, setTodos] = useState([]);
   /* Muutoslomakkeet tilamuuttujat */
   const [open, setOpen] = useState(false);
@@ -48,17 +49,17 @@ function Todolist() {
   const dc = useRef(true);
   // const dci = useRef(0);
 
+  useEffect(() => {
+    console.log(`useEffect,dc:${dc.current}`)
+    fetchItems();
+  }, [])
+
   const registerInnerRef = (n,...loput) => {
     let {ref,...rest} = register(n,...loput);
     let innerRef = ref;
     //console.log('innerRef:',innerRef,'rest:',rest);
     return {innerRef,...rest}
     }
-
-  useEffect(() => {
-    fetchItems();
-    console.log(`useEffect,dc:${dc.current}`)
-  }, [])
 
  // if (Array.isArray(todos) && todos.length) {
    // dci.current += 1;
@@ -108,6 +109,7 @@ function Todolist() {
     }
 
  const fetchItems = () => {
+   console.log('fetchItems')
     fetch(url + '.json')
     .then(response => response.json())
     .then(data => addKeys(data))
@@ -241,7 +243,7 @@ function Todolist() {
       return c.value
       } */     
 
- return (
+ return(
     <div style={{ minWidth:725,display:'table' }}>
     <AddTodo addTodo={addTodo}/>
     <ChangeTodo open={open} handleClose={handleClose}
@@ -298,7 +300,7 @@ function Todolist() {
               >
             </Checkbox>*/
 
-            /* Material-UI-komponentti */  
+            /* Material-UI-komponentti, toimii */  
             <Checkbox 
             {...register(`checkboxes.${p.node.id}`)}
             defaultChecked={ p.value }

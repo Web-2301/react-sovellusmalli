@@ -12,7 +12,8 @@ import logoImg from "../img/omnia_logo.png";
 
 function Navbar() {
     const [openMenu, setOpenMenu] = useState(false);
-  
+    console.log("rendering Navbar")
+
     return (
       <NavBar>
         <Logo src={logoImg}></Logo>
