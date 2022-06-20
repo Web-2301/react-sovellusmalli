@@ -46,6 +46,7 @@ function Todolist() {
   /* Muutoslomakkeet tilamuuttujat */
   const [open, setOpen] = useState(false);
   const [todo, setTodo] = useState(initialValue);
+  /* Checkboxien alustukseen tarvittaessa */
   const dc = useRef(true);
   // const dci = useRef(0);
 
@@ -55,6 +56,7 @@ function Todolist() {
   }, [])
 
   const registerInnerRef = (n,...loput) => {
+    /* Reactstrapin innerRef-määritys */
     let {ref,...rest} = register(n,...loput);
     let innerRef = ref;
     //console.log('innerRef:',innerRef,'rest:',rest);
