@@ -23,8 +23,35 @@ function Login(props) {
     alert(state.location.pathname)
     } */
  
+    const url = "http://localhost:5000/reactapi/signin";
 
-  function postLogin(data) {
+    function fetchLogin(data) {
+      console.log("data:",data)
+      const formData = new FormData();
+      Object.keys(data).forEach(key => formData.append(key, data[key]));
+      fetch(url,{
+        method:'POST',
+        credentials:'include',
+        body:formData})
+      .then(response => response.text())  
+      .then(data => {
+      console.log(`data:${data}`)
+      if (data == 'OK') {
+        setAuthTokens(data);
+        setLoggedIn(true);
+      } else {
+          setError(
+          'password',
+          {type: "palvelinvirhe"}
+          )
+      }
+    }).catch(e => {setError('apiError',{ message:e })})
+  }
+
+
+
+  
+  function axiosLogin(data) {
       axios.post("http://localhost:5000/reactapi/signin",data).then(result => {
       console.log(`result.status:${result.status}`)
       if (result.status === 200 && result.data == 'OK') {
@@ -70,7 +97,7 @@ function Login(props) {
       />
       {errors.password?.type === 'required' && <Error>Anna salasana</Error>} 
       {errors.password?.type === 'palvelinvirhe' && <Error>Väärä käyttäjätunnus tai salasana!</Error> }
-      <Button onClick={handleSubmit(data => postLogin(data))}>Kirjaudu</Button>
+      <Button onClick={handleSubmit(data => fetchLogin(data))}>Kirjaudu</Button>
       </Form>
       <Link to="/signup">Et ole rekisteröitynyt vielä?</Link>
      

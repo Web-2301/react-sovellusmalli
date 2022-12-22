@@ -4,7 +4,7 @@ function Footer(){
     console.log("rendering Footer")
     return (
         <footer>
-            &copy; Copyright 2022
+            &copy; Jukka Aula, 2022
         </footer>
     )
 }

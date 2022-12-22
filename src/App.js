@@ -28,7 +28,8 @@ function App(props) {
        jolloin sen boolean arvo on oikein false. */
     if (data) sessionStorage.setItem("tokens", JSON.stringify(data));
     else {
-      axios.get(closeUrl);
+      //axios.get(closeUrl,{withCredentials:true});
+      fetch(closeUrl,{credentials:'include'})
       sessionStorage.removeItem("tokens");
       }
     setAuthTokens(data);
