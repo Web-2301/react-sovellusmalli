@@ -42,6 +42,7 @@ function App(props) {
       <div className="container">
        <Routes>
           <Route exact path="/" element={<Home/>} />
+          <Route path="/testi" element={<Profiili/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<Signup/>} />
           <Route path="/admin" element={<Private><Admin/></Private>}/>

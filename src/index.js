@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import { BrowserRouter as Router } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
-
+/* Huom. React.StrictMode => useEffect suoritetaan kahteen kertaan,
+   vaikka sen parametrina on []! */
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

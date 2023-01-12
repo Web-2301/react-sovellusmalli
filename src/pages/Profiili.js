@@ -18,18 +18,20 @@ function Profiili(props) {
     let fieldsArr = Object.entries(fields).map(([key, value]) => setValue(key,value))
     },[])*/
 
+  console.log("Rendering Profiili")  
   const haeFetch = () => {
-    return fetch(urlHae, {  
-      credentials: 'include'
-    })  
-      .then(response => response.json())  
+    console.log("haeFetch")
+    return fetch(urlHae, {credentials: 'include'})  
+      .then(response => {
+        if(response.status !== 200) throw response.status
+        else return response.json()
+        })  
       .then(data => {  
         console.log(data);
+        if (data.virhe) throw data.virhe
         Object.keys(data).forEach(key => setValue(key, data[key]));
       })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
+      .catch(e => {setError('apiError',{ message:'Virhe: ' + e })})
   };  
 
   const haeAxios = () => {
@@ -49,6 +51,7 @@ function Profiili(props) {
 }
 
   useEffect(() => {
+    console.log("Profiili,useEffect")
     haeFetch()
     },[]);
   

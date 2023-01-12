@@ -17,7 +17,7 @@ export function PublicLink({ ...rest }) {
     //console.log("PublicLink,authTokens:"+authTokens+",sessionStorage:"+sessionStorage.tokens);
     return (
       !authTokens ?  
-      <NavLink {...rest}/> : ''
+      <NavLink style={{ color:'#aaa' }} {...rest}/> : ''
     );
   }
 

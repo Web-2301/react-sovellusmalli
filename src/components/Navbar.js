@@ -18,7 +18,9 @@ function Navbar() {
       <NavBar>
         <Logo src={logoImg}></Logo>
         <NavLinks openMenu={openMenu}>    
-            <NavLink to="/"> Home</NavLink>
+            <NavLink to="/">Home</NavLink>
+            {/* Kirjautumattoman käyttäjän testaaminen */}
+            <PublicLink to="/Testi">Profiili kirjautumatta</PublicLink>
             <PrivateLink to="/Admin">Admin</PrivateLink>
             <PrivateLink to="/Profiili">Profiili</PrivateLink>
             <PrivateLink to="/Todolist">Todolist</PrivateLink>      

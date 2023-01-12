@@ -4,6 +4,7 @@ import { useAuth } from "../context/Auth";
 
 function Admin(props) {
   const { setAuthTokens } = useAuth();
+  console.log("Renderin Admin")
 
   return (
     <div>

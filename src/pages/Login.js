@@ -23,28 +23,53 @@ function Login(props) {
     alert(state.location.pathname)
     } */
  
-    const url = "http://localhost:5000/reactapi/signin";
+  let csrfToken = ''
+  const baseUrl = "http://localhost:5000/reactapi/"
+  const url = baseUrl + "signin"
+  const csfrUrl = baseUrl + 'getcsrf'
 
-    function fetchLogin(data) {
+  const csrf = () => {
+      fetch(csfrUrl, {
+        credentials: "include",
+      })
+      .then((response) => {
+        //response.headers.forEach((v,i) => console.log(i));
+        //console.log(...response.headers);
+        csrfToken = response.headers.get("X-CSRFToken");
+        console.log('csrfToken:',csrfToken);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  
+  csrf()
+
+  function fetchLogin(data) {
+      console.log("csfrToken:",csrfToken)    
       console.log("data:",data)
       const formData = new FormData();
       Object.keys(data).forEach(key => formData.append(key, data[key]));
+      //formData.append("csrf_token", '')
       fetch(url,{
         method:'POST',
+        headers: {"X-CSRFToken": csrfToken},
         credentials:'include',
         body:formData})
       .then(response => response.text())  
       .then(data => {
       console.log(`data:${data}`)
-      if (data == 'OK') {
+      if (data === 'OK') {
         setAuthTokens(data);
         setLoggedIn(true);
-      } else {
-          setError(
-          'password',
-          {type: "palvelinvirhe"}
-          )
-      }
+        } 
+      else {
+        const dataObj = JSON.parse(data)
+        if (dataObj.virhe.includes('csrf'))
+          setError('password',{type: "palvelinvirhe"})
+        else 
+          setError('password',{type: "tunnusvirhe"})
+        }
     }).catch(e => {setError('apiError',{ message:e })})
   }
 
@@ -54,7 +79,7 @@ function Login(props) {
   function axiosLogin(data) {
       axios.post("http://localhost:5000/reactapi/signin",data).then(result => {
       console.log(`result.status:${result.status}`)
-      if (result.status === 200 && result.data == 'OK') {
+      if (result.status === 200 && result.data === 'OK') {
         console.log('post result:',result.data)
         setAuthTokens(result.data);
         setLoggedIn(true);
@@ -83,7 +108,7 @@ function Login(props) {
         placeholder="sähköpostiosoite"
         {...register("email", { 
           required: true,
-          pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+          pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
          })}
       /> 
       {errors.email?.type === 'required' && <Error>Anna sähköpostiosoite</Error>} 
@@ -96,8 +121,9 @@ function Login(props) {
          })}
       />
       {errors.password?.type === 'required' && <Error>Anna salasana</Error>} 
-      {errors.password?.type === 'palvelinvirhe' && <Error>Väärä käyttäjätunnus tai salasana!</Error> }
-      <Button onClick={handleSubmit(data => fetchLogin(data))}>Kirjaudu</Button>
+      {errors.password?.type === 'tunnusvirhe' && <Error>Väärä käyttäjätunnus tai salasana!</Error> }
+      {errors.password?.type === 'palvelinvirhe' && <Error>Kirjautuminen epäonnistui!</Error> }
+       <Button onClick={handleSubmit(data => fetchLogin(data))}>Kirjaudu</Button>
       </Form>
       <Link to="/signup">Et ole rekisteröitynyt vielä?</Link>
      
