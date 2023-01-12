@@ -3,8 +3,14 @@ Autentikointi: React context
 Muotoilu: Styled-components
 Lomakkeiden validointi: React-hook-form
 React-rooter-dom v. 6
+Palvelinliitäntä:
+- Autentikointi Session-evästeillä
+- CORS-Headerit (cross origin)
+- CSRF-tokenit 
+Toimiva palveluliitäntä Flaskiin:
+- Kirjautuminen, Poistuminen, Profiili
 
-Autentikoinnin lähde: Denny Scott
+React-autentikoinnin lähde: Denny Scott
 https://www.dennyscott.io/blog/react-hooks-authentication
 
 Laatinut: Jukka Aula
