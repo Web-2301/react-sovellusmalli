@@ -1,9 +1,10 @@
-import React, { useState,useRef } from "react";
+import React, { useState,useRef,useEffect } from "react";
 import { Link, Navigate } from 'react-router-dom';
 // import logoImg from "../img/omnia_logo.png";
 import { Card, Otsikko, Logo, Form, Input, Button, Error } from '../components/AuthForm';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+
 
 function Signup() {
   const [signedUp, setSignedUp] = useState(false);
@@ -11,10 +12,37 @@ function Signup() {
   const { register, handleSubmit, setError, reset, watch, formState: { errors } } = useForm();
   const password = useRef({});
   password.current = watch("password", "");
+  const csrfToken = useRef('');
   
-  function postSignup(data) {
+  console.log("Signup renderöidään...")
+
+  const baseUrl = "http://localhost:5000/reactapi/"
+  const url = baseUrl + "signup"
+  const csfrUrl = baseUrl + 'getcsrf'
+
+  const csrf = () => {
+    fetch(csfrUrl, {
+      credentials: "include",
+    })
+    .then((response) => {
+      //response.headers.forEach((v,i) => console.log(i));
+      //console.log(...response.headers);
+      csrfToken.current = response.headers.get("X-CSRFToken");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+  
+  useEffect(() => {
+    console.log(`useEffect`)
+    csrf()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  console.log('Signup,csrfToken:',csrfToken.current);
+  /*function postSignup(data) {
     console.log("data:",data)
-    const url = "http://localhost:5000/reactapi/signup" 
     axios.post(url,data)
       //.then(result => result.json())
       .then(result => {         
@@ -32,8 +60,39 @@ function Signup() {
             ))
         }
     }).catch(e => {setError('apiError',{ message:e })})
-  }
+  }*/
   
+  function fetchSignup(data) {
+    console.log("fetchSignup,csfrToken:",csrfToken.current)    
+    console.log("data:",data)
+    const formData = new FormData();
+    Object.keys(data).forEach(key => formData.append(key, data[key]));
+    //formData.append("csrf_token", '')
+    fetch(url,{
+      method:'POST',
+      headers: {"X-CSRFToken": csrfToken.current},
+      credentials:'include',
+      body:formData})
+    .then(response => response.text())  
+    .then(data => {
+    console.log(`data palvelimelta:${data}`)
+    if (data === 'OK') {
+      setSignedUp(true);
+      } 
+    else {
+      const dataObj = JSON.parse(data)
+      console.log("dataObj:",dataObj)
+      /* Huom. Palvelinvirheissä on virhe:, lomakkeen validointivirheissä ei.*/
+      if (dataObj.virhe?.includes('csrf'))
+        setError('password2',{type: "palvelinvirhe",message:'csfr-virhe' })
+      else 
+        setError('password2',{type: "tunnusvirhe",message:'Tunnukset jo käytössä'})
+      }
+  }).catch(e => {setError('apiError',{ message:e })})
+}
+
+
+
   if (signedUp) {
     return <Navigate to='/login'/>;
   }
@@ -48,7 +107,7 @@ function Signup() {
         placeholder="sähköpostiosoite"
         {...register("email", { 
           required: true,
-          pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+          pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
          })}
       /> 
       {errors.email?.type === 'required' && <Error>Anna sähköpostiosoite</Error>}
@@ -74,7 +133,6 @@ function Signup() {
       />
       {errors.password?.type === 'required' && <Error>Anna salasana</Error>} 
       {errors.password?.type === 'pattern'  && <Error>Vähintään 6 merkkiä, ainakin yksi numero ja kirjain</Error>} 
-      {errors.password?.type === 'palvelinvirhe' && <Error>{errors.password.message}</Error>} 
       <Input 
         type="password" 
         placeholder="salasana uudestaan" 
@@ -85,7 +143,10 @@ function Signup() {
       />
       {errors.password2?.type === 'required' && <Error>Anna salasana</Error>}
       {errors.password2?.type === 'validate' && <Error>Salasanat eivät täsmää</Error>}
-      <Button onClick={handleSubmit(data => postSignup(data))}>Tallenna</Button>
+      {errors.password2?.type === 'palvelinvirhe' && <Error>{errors.password2.message}</Error>} 
+      {errors.password2?.type === 'tunnusvirhe' && <Error>{errors.password2.message}</Error>} 
+
+      <Button onClick={handleSubmit(data => fetchSignup(data))}>Tallenna</Button>
       </Form>
       <Link to="/login">Already have an account?</Link>
     </Card>
