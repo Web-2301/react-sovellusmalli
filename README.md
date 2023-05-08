@@ -1,7 +1,7 @@
 # React-sovellusmalli 
 Autentikointi: React context 
 Muotoilu: Styled-components
-Lomakkeiden validointi: React-hook-form
+Lomakkeiden validointi: React-hook-form v. 7
 React-rooter-dom v. 6
 Palvelinliitäntä:
 - Autentikointi Session-evästeillä

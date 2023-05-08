@@ -29,9 +29,9 @@ export function LoginCloseButton() {
         setAuthTokens();
         }
     const login = () => {
-        navigate('/login');
+        navigate('/login')
         }
-               
+            
     return (
       authTokens ?   
       <Button onClick={logout}>Poistu</Button> : 

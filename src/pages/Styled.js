@@ -65,7 +65,7 @@ const Option = styled.option`
   font-size: 1rem;
 `;
 
-function SelectS({ register, options, name, ...rest }) {
+const SelectS = ({ register, options, name, ...rest }) => {
   return (
     <Select {...register(name)} {...rest}>
       {options.map((value,i) => (
