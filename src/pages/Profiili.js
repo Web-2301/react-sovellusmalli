@@ -9,16 +9,40 @@ const urlTallenna = "http://localhost:5000/reactapi/tallennaProfiili"
 
 
 function Profiili(props) {
-
+  const [tallennusOK, setTallennusOK] = useState(false);
   const { register, handleSubmit, setValue, setError, reset, watch, formState: { errors } } = useForm(initialValue);
   const password = useRef({});
   password.current = watch("password", "");
-  /*useEffect(()=>{
-    let fields = {'email':'jukka.aula@kolumbus.fi','username':'Jukka A'}
-    let fieldsArr = Object.entries(fields).map(([key, value]) => setValue(key,value))
-    },[])*/
+  const csrfToken = useRef('');
+  
+  console.log(`Profiili renderöidään,tallennusOK:${tallennusOK}`)
 
-  console.log("Rendering Profiili")  
+  const baseUrl = "http://localhost:5000/reactapi/"
+  const url = baseUrl + "tallennaProfiili"
+  const csfrUrl = baseUrl + 'getcsrf'
+
+  const csrf = () => {
+    fetch(csfrUrl, {
+      credentials: "include",
+    })
+    .then((response) => {
+      //response.headers.forEach((v,i) => console.log(i));
+      //console.log(...response.headers);
+      csrfToken.current = response.headers.get("X-CSRFToken");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+  
+  useEffect(() => {
+    console.log(`Profiili,useEffect,csrf`)
+    csrf()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  console.log('Profiili,csrfToken:',csrfToken.current);
+
   const haeFetch = () => {
     console.log("haeFetch")
     return fetch(urlHae, {credentials: 'include'})  
@@ -33,6 +57,47 @@ function Profiili(props) {
       })  
       .catch(e => {setError('apiError',{ message:'Virhe: ' + e })})
   };  
+
+  function fetchTallenna(data) {
+    console.log("fetchTallenna,csfrToken:",csrfToken.current)    
+    console.log("data:",data)
+    const formData = new FormData();
+    Object.keys(data).forEach(key => formData.append(key, data[key]));
+    //formData.append("csrf_token", '')
+    fetch(url,{
+      method:'POST',
+      headers: {"X-CSRFToken": csrfToken.current},
+      credentials:'include',
+      body:formData})
+    .then(response => response.text())  
+    .then(data => {
+    console.log(`data palvelimelta:${data}`)
+    if (data === 'OK') {
+      setTallennusOK(true);
+      } 
+    else {
+      setTallennusOK(false);
+      const dataObj = JSON.parse(data)
+      console.log("dataObj:",dataObj)
+      /* Huom. Palvelinvirheissä on virhe:, lomakkeen validointivirheissä ei.*/
+      if (dataObj.virhe?.includes('csrf'))
+        setError('password2',{type: "palvelinvirhe",message:'csfr-virhe' })
+      else {
+
+        Object.entries(dataObj).map(([key,arvo]) =>           
+        arvo.forEach(virhe => 
+          setError(
+            key,
+            {type: "palvelinvirhe",
+            message: virhe}
+            )))
+      
+        //setError('password2',{type: "tunnusvirhe",message:'Tunnukset jo käytössä'})
+        }
+      }
+  }).catch(e => {setError('apiError',{ message:e })})
+}
+
 
   const haeAxios = () => {
     axios.get(urlHae,{withCredentials:true})
@@ -51,18 +116,18 @@ function Profiili(props) {
 }
 
   useEffect(() => {
-    console.log("Profiili,useEffect")
+    console.log("Profiili,useEffect,haeProfiili")
     haeFetch()
     },[]);
   
 
   function tallenna(data) {
     console.log("data:",data)
-    axios.post(urlTallenna,data)
+    axios.post(url,data)
       //.then(result => result.json())
       .then(result => {         
         if (result.status === 200 && result.data === "OK") {
-          //setSignedUp(true);
+          //setOk(true);
         } else {
                       
           Object.entries(result.data).map(([key,arvo]) =>           
@@ -81,6 +146,7 @@ function Profiili(props) {
     {/*<Logo src={logoImg} />*/}
     <Otsikko>Oma profiili</Otsikko>
     <Form>
+    {tallennusOK && <div className="alert alert-success" role="alert">Profiili on tallennettu.</div>}  
     {errors.apiError && <Error>{errors.apiError.message}</Error>}  
     <Input 
       placeholder="sähköpostiosoite"
@@ -123,7 +189,7 @@ function Profiili(props) {
     />
     {errors.password2?.type === 'required' && <Error>Anna salasana</Error>}
     {errors.password2?.type === 'validate' && <Error>Salasanat eivät täsmää</Error>}
-    <Button onClick={handleSubmit(data => tallenna(data))}>Tallenna</Button>
+    <Button onClick={handleSubmit(data => fetchTallenna(data))}>Tallenna</Button>
     </Form>
   </Card>
   );
