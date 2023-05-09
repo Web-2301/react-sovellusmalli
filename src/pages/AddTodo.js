@@ -1,6 +1,5 @@
 // AddTodo.js
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Grid, Button } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';

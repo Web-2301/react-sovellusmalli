@@ -1,12 +1,14 @@
 import React, { useState,useRef,useEffect } from "react";
 import { Card, Otsikko, Logo, Form, Input, Button, Error } from '../components/AuthForm';
+//import { Error } from './Styled';
 import { useForm } from "react-hook-form";
-import axios from 'axios';
+//import axios from 'axios';
 
 const initialValue = { email: '', username: '', password: '', password2: '' }
-const urlHae = "http://localhost:5000/reactapi/haeProfiili" 
-const urlTallenna = "http://localhost:5000/reactapi/tallennaProfiili" 
-
+const baseUrl = "http://localhost:5000/reactapi/"
+const urlTallenna = baseUrl + "tallennaProfiili"
+const urlHae = baseUrl + "haeProfiili"
+const csfrUrl = baseUrl + 'getcsrf'
 
 function Profiili(props) {
   const [tallennusOK, setTallennusOK] = useState(false);
@@ -16,10 +18,6 @@ function Profiili(props) {
   const csrfToken = useRef('');
   
   console.log(`Profiili renderöidään,tallennusOK:${tallennusOK}`)
-
-  const baseUrl = "http://localhost:5000/reactapi/"
-  const url = baseUrl + "tallennaProfiili"
-  const csfrUrl = baseUrl + 'getcsrf'
 
   const csrf = () => {
     fetch(csfrUrl, {
@@ -31,7 +29,7 @@ function Profiili(props) {
       csrfToken.current = response.headers.get("X-CSRFToken");
     })
     .catch((err) => {
-      console.log(err);
+      console.log('csfr:',err);
     });
   }
   
@@ -41,6 +39,11 @@ function Profiili(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    console.log("Profiili,useEffect,haeProfiili")
+    haeFetch()
+    },[]);
+  
   console.log('Profiili,csrfToken:',csrfToken.current);
 
   const haeFetch = () => {
@@ -51,20 +54,20 @@ function Profiili(props) {
         else return response.json()
         })  
       .then(data => {  
-        console.log(data);
+        console.log("haeFetch",data);
         if (data.virhe) throw data.virhe
         Object.keys(data).forEach(key => setValue(key, data[key]));
       })  
       .catch(e => {setError('apiError',{ message:'Virhe: ' + e })})
   };  
 
-  function fetchTallenna(data) {
-    console.log("fetchTallenna,csfrToken:",csrfToken.current)    
+  function tallennaFetch(data) {
+    console.log("tallennaFetch,csfrToken:",csrfToken.current)    
     console.log("data:",data)
     const formData = new FormData();
     Object.keys(data).forEach(key => formData.append(key, data[key]));
     //formData.append("csrf_token", '')
-    fetch(url,{
+    fetch(urlTallenna,{
       method:'POST',
       headers: {"X-CSRFToken": csrfToken.current},
       credentials:'include',
@@ -98,7 +101,7 @@ function Profiili(props) {
   }).catch(e => {setError('apiError',{ message:e })})
 }
 
-
+/*
   const haeAxios = () => {
     axios.get(urlHae,{withCredentials:true})
     .then(result => {         
@@ -114,16 +117,12 @@ function Profiili(props) {
       }
   }).catch(e => {setError('apiError',{ message:e })})
 }
+*/
 
-  useEffect(() => {
-    console.log("Profiili,useEffect,haeProfiili")
-    haeFetch()
-    },[]);
-  
-
+  /*
   function tallenna(data) {
     console.log("data:",data)
-    axios.post(url,data)
+    axios.post(urlTallenna,data)
       //.then(result => result.json())
       .then(result => {         
         if (result.status === 200 && result.data === "OK") {
@@ -139,7 +138,7 @@ function Profiili(props) {
         }
     }).catch(e => {setError('apiError',{ message:e })})
   }
-  
+  */
 
   return (
     <Card>
@@ -189,7 +188,8 @@ function Profiili(props) {
     />
     {errors.password2?.type === 'required' && <Error>Anna salasana</Error>}
     {errors.password2?.type === 'validate' && <Error>Salasanat eivät täsmää</Error>}
-    <Button onClick={handleSubmit(data => fetchTallenna(data))}>Tallenna</Button>
+    {errors.password2?.type === 'palvelinvirhe' && <Error>{errors.password2.message}</Error>} 
+    <Button onClick={handleSubmit(data => tallennaFetch(data))}>Tallenna</Button>
     </Form>
   </Card>
   );

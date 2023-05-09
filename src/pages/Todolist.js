@@ -31,7 +31,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { Box,Checkbox,Button } from "@material-ui/core";
 // import { CheckboxS } from './Styled';
 import { useForm } from "react-hook-form";
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input } from 'reactstrap';
 
 
