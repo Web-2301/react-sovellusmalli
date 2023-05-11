@@ -25,10 +25,17 @@ import ChangeTodo from './ChangeTodo';
 // import moment from 'moment'
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
+
+/*
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import { Box,Checkbox,Button } from "@material-ui/core";
+import { Box,Checkbox,Button } from "@material-ui/core";*/
+import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Button,Checkbox,Box } from '@mui/material';
+
 // import { CheckboxS } from './Styled';
 import { useForm } from "react-hook-form";
 //import 'bootstrap/dist/css/bootstrap.min.css';

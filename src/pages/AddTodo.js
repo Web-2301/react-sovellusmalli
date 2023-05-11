@@ -1,53 +1,28 @@
 // AddTodo.js
 import React, { useState } from 'react';
-import { Grid, Button } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { Error,InputS,SelectS,Button as ButtonS } from './Styled';
+import { 
+  Box,Button,TextField,Dialog,DialogActions,
+  DialogContent,DialogTitle } from '@mui/material';
+import { Error,InputS,Button as ButtonS } from './Styled';
 import { Form, Input, Button as ButtonR, 
   Modal, ModalFooter,
   ModalHeader, ModalBody } from 'reactstrap';
 import { useForm } from "react-hook-form";
 
-const initialValue = { description: '', date: '', time: '', priority: '' }
-const options = ['','Matala','Keskiverto','Korkea']
+const initialValue = { description: '', date: '', priority: '' }
 
 function AddTodo(props) {
-  const [open, setOpen] = useState(false);
+  const [openM, setOpenM] = useState(false);
   const [openS, setOpenS] = useState(false);
   const [openR, setOpenR] = useState(false);
   //const [todo, setTodo] = useState(initialValue);
-  const { register, handleSubmit, reset, setValue, watch, control, formState: { errors } } = useForm(initialValue);
-  const { 
-    register:registerS, 
-    handleSubmit:handleSubmitS, 
-    reset:resetS, 
-    watch:watchS, 
-    formState: { errors:errorsS } } = useForm(initialValue);
 
-  const { 
-    register:registerR, 
-    handleSubmit:handleSubmitR, 
-    reset:resetR, 
-    watch:watchR, 
-    formState: { errors:errorsR } } = useForm(initialValue);
-
-    const defaultValues = {
-      description: "",
-      date: "",
-      time: "",
-      priority: ""
-    };
- 
-  // console.log(watch("description"));
+  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
+  console.log(watch("description"));
   
-  const handleOpen = () => {
-    setOpen(true)
+
+  const handleOpenM = () => {
+    setOpenM(true)
     }
   const handleOpenS = () => {
     setOpenS(true)
@@ -57,20 +32,16 @@ function AddTodo(props) {
     }
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenM(false);
     setOpenS(false);
     setOpenR(false);
     }
 
   const handleEmpty = () => {
-    resetR();
-    resetS(defaultValues);
-    reset(defaultValues);
-    //setValue("priority", "");
+    reset();
     }
   
-  const handleSave = data => {
-    console.log('handleSave:',data)
+  const handleSave = (data) => {
     props.addTodo(data);
     handleClose();
     }
@@ -88,145 +59,92 @@ function AddTodo(props) {
     reset({[event.target.name]:event.target.value})*/
   }
 
-  const registerInnerRef = (n,...loput) => {
-    let {ref,...rest} = registerR(n,...loput);
-    let innerRef = ref;
-    //console.log('innerRef:',innerRef,'rest:',rest);
+  /*
+    const registerInnerRef = (n,...loput) => {
+    let {ref:innerRef,...rest} = registerR(n,...loput);
     return {innerRef,...rest}
     }
-  
-  /* 
-  var {ref, ...description} = registerR('description', { required: true });
-  let refDescription = ref;
-  console.log('ref:',ref,'description:',description);
-  var {ref, ...date} = registerR('date', { required: true })
-  let refDate = ref;
-  var {ref, ...time} = registerR('time')
-  let refTime = ref;
-  var {ref, ...priority} = registerR('priority', { required: true })
-  let refPriority = ref;
   */
+
+  const {ref:refDescription, ...description} = register('description', { required: true });
+  const {ref:refDate, ...date} = register('date', { required: true })
+  const {ref:refPriority, ...priority} = register('priority', { required: true })
 
   return(
     <div>
-    <Grid align="center">
+    <Box sx={{ display:'grid',gap:1,gridTemplateColumns:'repeat(3,1fr)',width:700 }}>
       <ButtonS variant="outlined" color="primary" onClick={handleOpenS}>
         Add todo Styled
       </ButtonS>
       <ButtonR variant="outlined" color="primary" onClick={handleOpenR}>
         Add todo Reactstrap
       </ButtonR>
-      <Button variant="outlined" color="primary" onClick={handleOpen}>
+      <Button variant="outlined" color="primary" onClick={handleOpenM}>
         Add todo Material-UI
       </Button>
-    </Grid>
+    </Box>
 
-    <Dialog open={open}>
+    <Dialog open={openM}>
        <DialogTitle>New todo Material-UI</DialogTitle>
        <DialogContent>
-       <form>
+       <form onSubmit={handleSubmit(handleSave)}>
          <TextField
-            {...register("description", { 
-              required: true,
-              validate: value => !value.match(/(<([^>]+)>)/ig) 
-            })}
+            {...register("description", { required: true })}
             placeholder="Description"
             variant="outlined"
             margin="dense"
             fullWidth
           /> 
-          {errors.description?.type === 'required' && <Error>This field is required</Error>} 
-          {errors.description?.type === 'validate' && <Error>Luvattomia merkkejä</Error>} 
+          {errors.description && <Error>This field is required</Error>} 
          <TextField
             {...register("date", { required: true })}
             placeholder="Date"
-            type="date"
             variant="outlined"
             margin="dense"
             fullWidth
          />
         {errors.date && <Error>This date field is required</Error>} 
         <TextField
-            {...register("time")}
-            placeholder="Date"
-            type="time"
-            variant="outlined"
-            margin="dense"
-            fullWidth
-         />
-      
-        {/*<TextField
            {...register("priority", { required: true })}
            placeholder="Priority"
            variant="outlined"
            margin="dense"
            fullWidth
-  /> */}
-
-    {/* Huom. Material UI:n Select-arvon asetus esim. 
-    reset()-funktiolla ei muuta näkyvää Select-valintaa
-    Material-UI:n Dialogissa, vaikka arvo muuttuukin. 
-    Esim. arvon tyhjentäminen tuottaa validointivirheen,  
-    vaikka näytössä pysyy aikaisempi valinta. */}
-    <Select
-        {...register("priority", { required: true })}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        defaultValue= ""
-        style={{marginTop:10}}>
-        {options.map(value => 
-        <MenuItem key={value} value={value}>{value}</MenuItem>
-        )}  
-        </Select>
-    {errors.priority && <Error>Valitse tärkeys</Error>} 
+         /> 
     </form>
-    </DialogContent>
-    <DialogActions>
+      </DialogContent>
+      <DialogActions>
          <Button color="secondary" variant="outlined" onClick={handleEmpty}>Tyhjennä</Button>
          <Button color="secondary" variant="outlined" onClick={handleClose}>Peruuta</Button>
          <Button color="primary" variant="outlined" onClick={handleSubmit(handleSave)}>Lisää</Button>
-    </DialogActions>
+      </DialogActions>
     </Dialog> 
 
     <Dialog open={openS}>
-      <DialogTitle>New todo Styled</DialogTitle>
-      <DialogContent>
-      <form>
+       <DialogTitle>New todo Styled</DialogTitle>
+       <DialogContent>
+       <form onSubmit={handleSubmit(handleSave)}>
          <InputS
-            {...registerS("description", { required: true })}
+            {...register("description", { required: true })}
             placeholder="Description"
           /> 
-          {errorsS.description && <Error>Description field is required</Error>} 
+          {errors.description && <Error>Description field is required</Error>} 
          <InputS
-            {...registerS("date", { required: true })}
+            {...register("date", { required: true })}
             placeholder='Date'
-            type='date'
          />
-        {errorsS.date && <Error>Date field is required</Error>} 
+        {errors.date && <Error>Date field is required</Error>} 
         <InputS
-            {...registerS("time", { required: true })}
-            placeholder='Time'
-            type='time'
-        />
-        {/*<InputS options={options}
           {...register("priority", { required: true })}
            placeholder="Priority"
-        />*/}
-
-        <SelectS 
-          register={registerS} 
-          options={options} 
-          name='priority'
-          //validation={ {required: true} }
-        />
-        {errorsS.priority?.type === 'required' && <Error>Priority field is required</Error>}     
+        /> 
+        {errors.priority && <Error>Priority field is required</Error>}     
       </form>
       </DialogContent>
       <DialogActions>
         <ButtonS color="secondary" variant="outlined" onClick={handleEmpty}>Tyhjennä</ButtonS>
         <ButtonS color="secondary" variant="outlined" onClick={handleClose}>Cancel</ButtonS>
-        <ButtonS color="primary" variant="outlined" onClick={handleSubmitS(handleSave)}>Save</ButtonS>
+        <ButtonS color="primary" variant="outlined" onClick={handleSubmit(handleSave)}>Save</ButtonS>
       </DialogActions>
      </Dialog> 
 
@@ -235,42 +153,29 @@ function AddTodo(props) {
        <ModalBody>
        <form>
          <Input
-            //innerRef={refDescription}
-            {...registerInnerRef('description',{ required: true })}
+            innerRef={refDescription}
+            {...description}    
             placeholder="Description"
           /> 
-          {errorsR.description && <Error>Description field is required</Error>} 
+          {errors.description && <Error>Description field is required</Error>} 
          <Input
-           style={{marginTop:10}}
-           //innerRef={refDate}
-           //{...date}
-           {...registerInnerRef('date',{ required: true })}
-           type='date'
+           innerRef={refDate}
+           {...date}
+           placeholder='Date'
          />
-        {errorsR.date && <Error>Date field is required</Error>} 
+        {errors.date && <Error>Date field is required</Error>} 
         <Input
-           style={{marginTop:10}}
-           //innerRef={refTime}
-           //{...time}
-           {...registerInnerRef('time')}
-           type='time'
-         />
-        <Input type='select'
-          style={{marginTop:10}}
-          //innerRef={refPriority}
-          //{...priority}
-          {...registerInnerRef('priority',{ required: true })}
-          >
-          {options.map(value => 
-            <option key={value} value={value}>{value}</option>)}
-        </Input>
-        {errorsR.priority && <Error>Priority field is required</Error>}  
+           innerRef={refPriority}
+           {...priority}
+           placeholder="Priority"
+         /> 
+         {errors.priority && <Error>Priority field is required</Error>}  
     </form>
       </ModalBody>
       <ModalFooter>
         <ButtonR color="secondary" variant="outlined" onClick={handleEmpty}>Tyhjennä</ButtonR>
         <ButtonR color="secondary" variant="outlined" onClick={handleClose}>Cancel</ButtonR>
-        <ButtonR color="primary" variant="outlined" onClick={handleSubmitR(handleSave)}>Save</ButtonR>
+        <ButtonR color="primary" variant="outlined" onClick={handleSubmit(handleSave)}>Save</ButtonR>
       </ModalFooter>
      </Modal> 
 

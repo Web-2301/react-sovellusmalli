@@ -45,7 +45,7 @@ const Button = styled.button`
   border-radius: 3px;
   padding: 0.3rem 0.5rem;
   color: white;
-  width: 150px;
+  width: 100%;
   white-space: nowrap;
   margin-right: 0.1rem;
   vertical-align:middle
