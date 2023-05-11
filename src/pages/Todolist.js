@@ -64,8 +64,7 @@ function Todolist() {
 
   const registerInnerRef = (n,...loput) => {
     /* Reactstrapin innerRef-määritys */
-    let {ref,...rest} = register(n,...loput);
-    let innerRef = ref;
+    let {ref:innerRef,...rest} = register(n,...loput);
     //console.log('innerRef:',innerRef,'rest:',rest);
     return {innerRef,...rest}
     }
@@ -113,7 +112,7 @@ function Todolist() {
     setOpen(true);
     }  
 
-  const handleClose = () => {
+  const close = () => {
     setOpen(false);
     }
 
@@ -136,46 +135,30 @@ function Todolist() {
   }
 
   const changeTodo = data => {
-    /* Lomakkeen date-kentästä YYYY-MM-DD,
-       lomakkeen time-kentästä hh:mm */ 
-    console.log('changeTodo,data I:',data)  
-    let t = data.time;
-    t = t.trim().replace('klo','')
-    if (t) data.date += ' ' + t
-    delete data.time   
-    console.log('changeTodo,data II:',data)
-    const confirm = window.confirm(`Muutatko tehtävän ${data.date}?`);
-    //let confirm = true;
-    confirm && fetch(url + `${todo.id}.json`,{
+    console.log('changeTodo,todo:',todo,'data:',data)
+    data.date = data.date.replace('T',' ')
+    const confirm = window.confirm("Are you sure, you want to update this row?");
+    confirm && fetch(url + `${data.id}.json`,{
       method: 'PUT',
       body: JSON.stringify(data)
       })
-    .then(
-      response => { 
+    .then( response => { 
         fetchItems();
-        handleClose();
-      })
+        close();
+        })
     .catch(err => console.error(err))
   }
 
+
   const addTodo = (newTodo) => {
-    /* Lomakkeelta YYYY-MM-DD ja 'hh:mm' */
-    let t = newTodo.time
-    let dt = newTodo.date
-    if (t) dt += ' ' + t; 
-    //console.log('addTodo,dt I:',dt)
-    // dt = moment(dt).format('YYYY-MM-DD hh:mm:ss')
-    console.log('addTodo,dt:',dt)
-    let todo = {...newTodo,['date'] : dt}  
-    delete todo.time
-    console.log('addTodo:',todo)
     fetch(url + '.json',{
       method: 'POST',
-      body: JSON.stringify(todo)
+      body: JSON.stringify(newTodo)
     })
     .then(response => fetchItems())
     .catch(err => console.error(err))
   }
+
 
   const localDateTime = dt => {
     // let d = dt.replace(' klo ',' ')
@@ -255,7 +238,7 @@ function Todolist() {
  return(
     <div style={{ minWidth:725,display:'table' }}>
     <AddTodo addTodo={addTodo}/>
-    <ChangeTodo open={open} handleClose={handleClose}
+    <ChangeTodo open={open} close={close}
         todo={todo} changeTodo={changeTodo}/>
     {/* <div className="ag-theme-material" style={ { height: 400, width: 800, margin: 'auto' } }>*/}
     <div className="ag-theme-material" style={{width:'100%'}}>

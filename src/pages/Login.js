@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect,useRef } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import logoImg from "../img/omnia_logo.png";
@@ -23,10 +23,15 @@ function Login(props) {
     alert(state.location.pathname)
     } */
  
-  let csrfToken = ''
+  let csrfToken = useRef('')
   const baseUrl = "http://localhost:5000/reactapi/"
   const url = baseUrl + "signin"
   const csfrUrl = baseUrl + 'getcsrf'
+
+  useEffect(() => {
+    console.log(`useEffect`)
+    csrf()
+  }, [])
 
   const csrf = () => {
       fetch(csfrUrl, {
@@ -35,15 +40,14 @@ function Login(props) {
       .then((response) => {
         //response.headers.forEach((v,i) => console.log(i));
         //console.log(...response.headers);
-        csrfToken = response.headers.get("X-CSRFToken");
-        console.log('csrfToken:',csrfToken);
+        csrfToken.current = response.headers.get("X-CSRFToken");
+        console.log('csrfToken:',csrfToken.current);
       })
       .catch((err) => {
         console.log(err);
       });
     }
   
-  csrf()
 
   function fetchLogin(data) {
       console.log("csfrToken:",csrfToken)    
@@ -53,7 +57,7 @@ function Login(props) {
       //formData.append("csrf_token", '')
       fetch(url,{
         method:'POST',
-        headers: {"X-CSRFToken": csrfToken},
+        headers: {"X-CSRFToken": csrfToken.current},
         credentials:'include',
         body:formData})
       .then(response => response.text())  

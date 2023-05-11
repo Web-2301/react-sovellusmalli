@@ -22,7 +22,6 @@ const InputS = styled.input`
   padding: 1rem;
   border: 1px solid #999;
   margin-top: 1rem;
-  font-size: 0.8rem;
   width: 90%;
 `;
 
@@ -30,12 +29,11 @@ const Select = styled.select`
   padding: 1rem;
   border: 1px solid #999;
   margin-top: 1rem;
-  font-size: 0.8rem;
   width: 90%;
 `;
 
 const CheckboxS = styled.input.attrs({ type: 'checkbox' })`
-font-size: 0.8rem;
+
 `;
 
 const Button = styled.button`
@@ -59,7 +57,6 @@ const Logo = styled.img`
 const Error = styled.div`
   color: red;
   margin-top: 2px;
-  font-size: 0.8rem;
 `;
 
 const Option = styled.option`

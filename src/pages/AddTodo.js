@@ -1,9 +1,9 @@
 // AddTodo.js
 import React, { useState } from 'react';
 import { 
-  Box,Button,TextField,Dialog,DialogActions,
+  Box,Button,TextField,FormControl,InputLabel,Select,MenuItem,Dialog,DialogActions,
   DialogContent,DialogTitle } from '@mui/material';
-import { Error,InputS,Button as ButtonS } from './Styled';
+import { Error,InputS,SelectS,Button as ButtonS } from './Styled';
 import { Form, Input, Button as ButtonR, 
   Modal, ModalFooter,
   ModalHeader, ModalBody } from 'reactstrap';
@@ -90,27 +90,38 @@ function AddTodo(props) {
        <form onSubmit={handleSubmit(handleSave)}>
          <TextField
             {...register("description", { required: true })}
-            placeholder="Description"
+            label="Description"
             variant="outlined"
-            margin="dense"
+            margin="normal"
             fullWidth
+            InputLabelProps={{ shrink: true }} 
           /> 
           {errors.description && <Error>This field is required</Error>} 
-         <TextField
-            {...register("date", { required: true })}
-            placeholder="Date"
-            variant="outlined"
-            margin="dense"
-            fullWidth
-         />
-        {errors.date && <Error>This date field is required</Error>} 
-        <TextField
-           {...register("priority", { required: true })}
-           placeholder="Priority"
+
+          <TextField 
+           {...register("date", { required: true })}
            variant="outlined"
-           margin="dense"
+           margin="normal"
+           label="Date"
+           type="datetime-local"
            fullWidth
-         /> 
+           InputLabelProps={{ shrink: true }}             
+           />
+         {errors.date && <Error>Lisää päivämäärä ja aika</Error>} 
+
+        <FormControl fullWidth margin="normal">
+        <InputLabel id="priority-label">Priority</InputLabel>
+          <Select fullWidth
+          {...register("priority", { required: true })}
+          label="Priority"
+          defaultValue={initialValue.priority}
+          >
+          <MenuItem value="Matala">Matala</MenuItem>
+          <MenuItem value="Normaali">Normaali</MenuItem>
+          <MenuItem value="Korkea">Korkea</MenuItem>
+          </Select>
+        </FormControl>
+
     </form>
       </DialogContent>
       <DialogActions>
@@ -131,12 +142,15 @@ function AddTodo(props) {
           {errors.description && <Error>Description field is required</Error>} 
          <InputS
             {...register("date", { required: true })}
-            placeholder='Date'
+            label='Date'
+            type='datetime-local'
          />
         {errors.date && <Error>Date field is required</Error>} 
-        <InputS
-          {...register("priority", { required: true })}
+        <SelectS 
+           register={register}
+           name='priority'
            placeholder="Priority"
+           options={['Matala','Normaali','Korkea']}
         /> 
         {errors.priority && <Error>Priority field is required</Error>}     
       </form>
