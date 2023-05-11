@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 export const NavBar = styled.nav`
@@ -15,8 +15,7 @@ export const NavLinks = styled.div`
   display: ${(props) => (props.openMenu ? "flex" : "none")};
   width: 100%; 
   flex-direction: column;
-  align-items: center;
-  padding: 0 150px;
+  padding: 0 125px;
   margin: 40px 0 20px 0;
   @media (min-width: 700px) {
     flex-direction: row;
@@ -25,12 +24,16 @@ export const NavLinks = styled.div`
   }
 `;
 
-export const NavLink = styled(Link)`
+export const NavItem = styled(NavLink)`
 color: white;
 font-size: x-large; 
 text-decoration: none;
 font-family: Arial, Helvetica, sans-serif;
-margin: 5px 10px;
+margin-right: 15px;
+white-space:nowrap;
+&.active {
+  color: #ccc;
+}
 `;
 
 export const Logo = styled.img`
@@ -65,3 +68,86 @@ export const Button = styled.button`
     right:0;
   }
 `;
+
+/*
+import { useState } from 'react';
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+const Nav = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #333;
+  color: #fff;
+`;
+const NavLogo = styled(NavLink)`
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+`;
+const NavMenu = styled.div`
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  position: absolute;
+  top: 4rem;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+`;
+const NavItem = styled(NavLink)`
+  display: block;
+  padding: 0.5rem;
+  text-decoration: none;
+  color: #fff;
+  border-top: 1px solid #fff;
+  &:first-child {
+    border-top: none;
+  }
+  &.active {
+    background-color: #666;
+  }
+`;
+const NavButton = styled.button`
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+  return (
+    <Nav>
+      <NavLogo to="/">MyLogo</NavLogo>
+      <NavButton onClick={toggleMenu}>
+        <i className="fa fa-bars" aria-hidden="true"></i>
+      </NavButton>
+      <NavMenu isOpen={isOpen}>
+        <NavItem exact to="/" activeClassName="active">
+          Home
+        </NavItem>
+        <NavItem to="/about" activeClassName="active">
+          About
+        </NavItem>
+        <NavItem to="/services" activeClassName="active">
+          Services
+        </NavItem>
+        <NavItem to="/contact" activeClassName="active">
+          Contact
+        </NavItem>
+      </NavMenu>
+    </Nav>
+  );
+};
+export default Navbar;
+
+
+
+*/

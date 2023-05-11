@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./context/Auth";
-import { NavLink,Button } from "./components/Navbar.style";
+import { NavItem as NavLink,Button } from "./components/Navbar.style";
 
 export function PrivateLink({ ...rest }) {
   const { authTokens } = useAuth();

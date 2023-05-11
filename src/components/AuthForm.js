@@ -25,7 +25,6 @@ const Input = styled.input`
   padding: 1rem;
   border: 1px solid #999;
   margin-top: 1rem;
-  font-size: 0.8rem;
 `;
 
 const Button = styled.button`
@@ -37,7 +36,6 @@ const Button = styled.button`
   font-weight: 700;
   width: 100%;
   margin: 1rem 0;
-  font-size: 0.8rem;
 `;
 
 const Logo = styled.img`
@@ -46,10 +44,8 @@ const Logo = styled.img`
 `;
 
 const Error = styled.div`
-  background-color: red;
-  color: white;
+  color: red;
   margin-top: 2px;
-  font-size: 0.8rem;
 `;
 
 export { Form, Otsikko, Input, Button, Logo, Card, Error };
