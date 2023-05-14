@@ -18,11 +18,11 @@ function Login(props) {
   }  */
    
   const { state } = useLocation()
-  /* if (state) {
+  /*if (state) {
     console.log("Login,state:",state)
     alert(state.location.pathname)
-    } */
- 
+    }*/ 
+  
   let csrfToken = useRef('')
   const baseUrl = "http://localhost:5000/reactapi/"
   const url = baseUrl + "signin"
@@ -62,24 +62,22 @@ function Login(props) {
         body:formData})
       .then(response => response.text())  
       .then(data => {
-      console.log(`data:${data}`)
-      if (data === 'OK') {
-        setAuthTokens(data);
-        setLoggedIn(true);
-        } 
-      else {
-        const dataObj = JSON.parse(data)
-        if (dataObj.virhe.includes('csrf'))
-          setError('password',{type: "palvelinvirhe"})
-        else 
-          setError('password',{type: "tunnusvirhe"})
-        }
-    }).catch(e => {setError('apiError',{ message:e })})
+        console.log(`data:${data}`)
+        if (data === 'OK') {
+          setAuthTokens(data);
+          setLoggedIn(true);
+          } 
+        else {
+          const dataObj = JSON.parse(data)
+          if (dataObj.virhe.includes('csrf'))
+            setError('password',{type: "palvelinvirhe"})
+          else 
+            setError('password',{type: "tunnusvirhe"})
+          }})
+      .catch(e => {setError('apiError',{ message:e })})
   }
 
-
-
-  
+ 
   function axiosLogin(data) {
       axios.post("http://localhost:5000/reactapi/signin",data).then(result => {
       console.log(`result.status:${result.status}`)
@@ -129,10 +127,9 @@ function Login(props) {
       {errors.password?.type === 'palvelinvirhe' && <Error>Kirjautuminen epäonnistui!</Error> }
        <Button onClick={handleSubmit(data => fetchLogin(data))}>Kirjaudu</Button>
       </Form>
-      <Link to="/signup">Et ole rekisteröitynyt vielä?</Link>
-     
+      <Link to="/signup">Et ole rekisteröitynyt vielä?</Link>    
     </Card>
-  );
+  )
 }
 
-export default Login;
+export default Login

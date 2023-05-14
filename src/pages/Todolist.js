@@ -19,13 +19,12 @@ handleSubmit-kutsun.
 Huom. React.StrictMode aiheuttaa renderöimisen kahteen kertaan.
 */
 import React, { useState, useEffect, useRef } from 'react';
-import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import AddTodo from './AddTodo';
 import ChangeTodo from './ChangeTodo';
 // import moment from 'moment'
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-material.css';
-
+import { AgGridReact,AgGridColumn } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-material.css';
 /*
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -164,7 +163,7 @@ function Todolist() {
     // let d = dt.replace(' klo ',' ')
     // dt.padEnd(15, ' 00:00');
     // console.log('dt:',dt)
-    if (dt.length > 10)
+    if (dt && dt.length > 10)
     return new Date(dt).toLocaleString(undefined, {
         day:    'numeric',
         month:  'numeric',
@@ -235,108 +234,76 @@ function Todolist() {
       return c.value
       } */     
 
+  const [columnDefs] = useState([{ field: 'description', 
+  sortable: true, 
+  filter: true,
+  cellStyle: { 'padding-left': 0 } 
+  },
+{ field: 'date', 
+  sortable: true, 
+  filter: true,
+  width: 150,
+  cellStyle: { 'padding-left': 0 },
+  valueGetter: p => localDateTime(p.data.date),
+  comparator: dateComparator 
+  },
+{ field: 'priority', 
+  sortable: true,
+  filter: true,
+  width: 110,
+  cellStyle: { 'padding-left': 0 }, 
+  },
+{ field: 'activate', 
+  sortable:true,
+  filter:true, 
+  headerName: 'Active',
+  width: 110,
+  cellStyle: { 'padding-left': 0 },
+  cellRenderer: p => 
+
+    <Checkbox {...register(`checkboxes.${p.node.id}`)} defaultChecked={ p.value }>
+    </Checkbox>
+
+  },
+  { field:'id', 
+  headerName: '',
+  width: 100,
+  cellStyle: { 'padding-left': 0 },
+  cellRenderer: p => 
+    <>
+    <input type='hidden' value={p.value}
+    {...register(`lista.${p.node.id}`)} />
+    <IconButton onClick={() => handleUpdate(p.data,p.value)} size="small" color="secondary">
+    <EditIcon/></IconButton>
+    <IconButton onClick={() => deleteTodo(p.value)} size="small" color="secondary">
+    <DeleteIcon/></IconButton>
+    </>
+    }
+
+        ]);
+
  return(
     <div style={{ minWidth:725,display:'table' }}>
     <AddTodo addTodo={addTodo}/>
     <ChangeTodo open={open} close={close}
         todo={todo} changeTodo={changeTodo}/>
     {/* <div className="ag-theme-material" style={ { height: 400, width: 800, margin: 'auto' } }>*/}
-    <div className="ag-theme-material" style={{width:'100%'}}>
+    <div className="ag-theme-material" style={{}}>
     <form onSubmit={handleSubmit(handleSave)}>
         <AgGridReact 
           rowData={todos}  
           domLayout={'autoHeight'}
-          suppressHorizontalScroll={true}
+          suppressHorizontalScroll={false}
+          columnDefs={columnDefs}
           >
-          <AgGridColumn 
-          sortable={true} 
-          filter={true} 
-          field='description'
-          />
-          <AgGridColumn 
-          sortable={true} 
-          filter={true} 
-          field='date'
-          valueGetter={p => localDateTime(p.data.date)}
-          comparator={dateComparator}
-          />
-          <AgGridColumn 
-          sortable={true} 
-          filter={true} 
-          field='priority' 
-          width={120}
-          /> 
-          <AgGridColumn 
-          sortable={true} 
-          filter={true} 
-          field='activate' 
-          headerName='Active'
-          width={110}
-          cellRenderer={ p => 
-            /* raaka */  
-            /*<input type='checkbox' 
-             {...register(`checkboxes.${p.node.id}`)}
-             defaultChecked={ dc.current ? p.value : null }
-            size='small'
-            onClick={handleOnClick}
-            >
-            </input>*/
-
-            /* oma komponentti */  
-            /* <Checkbox checked={p.value} i={p.node.id}></Checkbox> */
-
-            /* styled component */  
-            /*<CheckboxS 
-              {...register(`checkboxes.${p.node.id}`)}
-              defaultChecked={ dc.current ? p.value : null }
-              >
-            </Checkbox>*/
-
-            /* Material-UI-komponentti, toimii */  
-            <Checkbox 
-            {...register(`checkboxes.${p.node.id}`)}
-            defaultChecked={ p.value }
-            >
-            </Checkbox>
-
-            /* Reactstrap-komponentti */  
-            /*<Input
-            style={{verticalAlign:'middle'}}
-            type='checkbox'
-            {...registerInnerRef(`checkboxes.${p.node.id}`)}
-            defaultChecked={ p.value }
-            />*/
-            
-
-            }
-          />     
-          <AgGridColumn 
-          headerName=''
-          field='id' 
-          width={120}
-          cellRenderer={p => 
-            <>
-            <input 
-              type='hidden' 
-              value={p.value}
-              {...register(`lista.${p.node.id}`)} 
-            />
-            <IconButton onClick={() => handleUpdate(p.data,p.value)} size="small" color="secondary">
-              <EditIcon/>
-            </IconButton>
-            <IconButton onClick={() => deleteTodo(p.value)} size="small" color="secondary">
-              <DeleteIcon/>
-            </IconButton>
-            </>
-            }
-          />      
+          
         </AgGridReact>
 
         <Box align="right">
         <Button 
           onClick={handleClick}
           type="submit"
-          style={{margin:10}} 
+          style={{margin:10,right:50}} 
           variant="contained"
           color="primary">Tallenna</Button>
         </Box>

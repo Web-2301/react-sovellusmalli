@@ -1,9 +1,11 @@
 {
-  "name": "react-router-auth-21",
+  "name": "react-router-auth",
   "homepage": "http://localhost/reactodo/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ag-grid-community/all-modules": "^27.3.0",
+    "@ag-grid-community/react": "^29.3.4",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.10.16",
@@ -11,8 +13,8 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "ag-grid-community": "^27.2.1",
-    "ag-grid-react": "^27.2.1",
+    "ag-grid-community": "^29.3.4",
+    "ag-grid-react": "^29.3.4",
     "axios": "^0.24.0",
     "bootstrap": "^5.1.3",
     "moment": "^2.29.3",

@@ -4,7 +4,7 @@ function Footer(){
     console.log("rendering Footer")
     return (
         <footer>
-            &copy; Jukka Aula, 2023
+            &copy; Web-ohjelmointi, 2023
         </footer>
     )
 }
