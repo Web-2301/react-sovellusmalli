@@ -1,4 +1,4 @@
-# React-sovellusmalli 
+# React-sovellusmalli, ver. 2305 
 Autentikointi: React context 
 Muotoilu: Styled-components
 Lomakkeiden validointi: React-hook-form v. 7
