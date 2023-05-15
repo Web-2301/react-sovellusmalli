@@ -41,7 +41,7 @@ function Login(props) {
         //response.headers.forEach((v,i) => console.log(i));
         //console.log(...response.headers);
         csrfToken.current = response.headers.get("X-CSRFToken");
-        console.log('csrfToken:',csrfToken.current);
+        console.log('csrf,csrfToken:',csrfToken.current);
       })
       .catch((err) => {
         console.log(err);
@@ -50,8 +50,8 @@ function Login(props) {
   
 
   function fetchLogin(data) {
-      console.log("csfrToken:",csrfToken)    
-      console.log("data:",data)
+      console.log("fetchLogin,csfrToken:",csrfToken.current)    
+      console.log("fetchLogin,data:",data)
       const formData = new FormData();
       Object.keys(data).forEach(key => formData.append(key, data[key]));
       //formData.append("csrf_token", '')
@@ -62,22 +62,26 @@ function Login(props) {
         body:formData})
       .then(response => response.text())  
       .then(data => {
-        console.log(`data:${data}`)
+        console.log(`fetchLogin,response data:${data}`)
         if (data === 'OK') {
           setAuthTokens(data);
           setLoggedIn(true);
           } 
         else {
           const dataObj = JSON.parse(data)
-          if (dataObj.virhe.includes('csrf'))
+          if (dataObj.virhe?.includes('csrf'))
             setError('password',{type: "palvelinvirhe"})
           else 
-            setError('password',{type: "tunnusvirhe"})
+            setError('password',{type: "tunnusvirhe",message:dataObj.virhe})
           }})
-      .catch(e => {setError('apiError',{ message:e })})
+      .catch(e => {
+        console.log('fetchLogin,e:',e)
+        setError('apiError',{ message:e })
+      })
   }
 
  
+  /*
   function axiosLogin(data) {
       axios.post("http://localhost:5000/reactapi/signin",data).then(result => {
       console.log(`result.status:${result.status}`)
@@ -93,6 +97,7 @@ function Login(props) {
       }
     }).catch(e => {setError('apiError',{ message:e })})
   }
+  */
 
   if (loggedIn) {
     const referer = state?.location.pathname || '/' 
