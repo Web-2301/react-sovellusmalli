@@ -288,7 +288,7 @@ function Todolist() {
     <ChangeTodo open={open} close={close}
         todo={todo} changeTodo={changeTodo}/>
     {/* <div className="ag-theme-material" style={ { height: 400, width: 800, margin: 'auto' } }>*/}
-    <div className="ag-theme-material" style={{}}>
+    <div className="ag-theme-material" style={{width:700}}>
     <form onSubmit={handleSubmit(handleSave)}>
         <AgGridReact 
           rowData={todos}  

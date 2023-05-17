@@ -75,8 +75,9 @@ function Login(props) {
             setError('password',{type: "tunnusvirhe",message:dataObj.virhe})
           }})
       .catch(e => {
+        //e: TypeError: Failed to fetch
         console.log('fetchLogin,e:',e)
-        setError('apiError',{ message:e })
+        setError('apiError',{ message:String(e) })
       })
   }
 
