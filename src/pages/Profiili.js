@@ -8,8 +8,8 @@ import { baseUrl,csrfFetch } from '../connections/yhteydet';
 
 const initialValue = { email: '', username: '', password: '', password2: '' }
 // const baseUrl = "http://localhost:5000/reactapi/"
-const urlTallenna = baseUrl + "tallennaProfiili"
-const urlHae = baseUrl + "haeProfiili"
+const urlTallenna = baseUrl + "/tallennaProfiili"
+const urlHae = baseUrl + "/haeProfiili"
 // const csfrUrl = baseUrl + 'getcsrf'
 
 function Profiili(props) {
