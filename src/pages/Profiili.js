@@ -2,13 +2,15 @@ import React, { useState,useRef,useEffect } from "react";
 import { Card, Otsikko, Logo, Form, Input, Button, Error } from '../components/AuthForm';
 //import { Error } from './Styled';
 import { useForm } from "react-hook-form";
+import { baseUrl,csrfFetch } from '../connections/yhteydet';
+
 //import axios from 'axios';
 
 const initialValue = { email: '', username: '', password: '', password2: '' }
-const baseUrl = "http://localhost:5000/reactapi/"
+// const baseUrl = "http://localhost:5000/reactapi/"
 const urlTallenna = baseUrl + "tallennaProfiili"
 const urlHae = baseUrl + "haeProfiili"
-const csfrUrl = baseUrl + 'getcsrf'
+// const csfrUrl = baseUrl + 'getcsrf'
 
 function Profiili(props) {
   const [tallennusOK, setTallennusOK] = useState(false);
@@ -20,9 +22,7 @@ function Profiili(props) {
   console.log(`Profiili renderöidään,tallennusOK:${tallennusOK}`)
 
   const csrf = () => {
-    fetch(csfrUrl, {
-      credentials: "include",
-    })
+    csrfFetch()
     .then((response) => {
       //response.headers.forEach((v,i) => console.log(i));
       //console.log(...response.headers);

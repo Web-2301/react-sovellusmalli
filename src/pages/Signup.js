@@ -3,7 +3,9 @@ import { Link, Navigate } from 'react-router-dom';
 // import logoImg from "../img/omnia_logo.png";
 import { Card, Otsikko, Logo, Form, Input, Button, Error } from '../components/AuthForm';
 import { useForm } from "react-hook-form";
-import axios from 'axios';
+import { baseUrl,csrfFetch } from '../connections/yhteydet';
+
+// import axios from 'axios';
 
 
 function Signup() {
@@ -13,17 +15,13 @@ function Signup() {
   const password = useRef({});
   password.current = watch("password", "");
   const csrfToken = useRef('');
-  
+  // const baseUrl = "http://localhost:5000/reactapi/"
+  // const csrfUrl = baseUrl + 'getcsrf'
+  const signupUrl = baseUrl + "/signup"
   console.log("Signup renderöidään...")
 
-  const baseUrl = "http://localhost:5000/reactapi/"
-  const url = baseUrl + "signup"
-  const csfrUrl = baseUrl + 'getcsrf'
-
   const csrf = () => {
-    fetch(csfrUrl, {
-      credentials: "include",
-    })
+    csrfFetch()
     .then((response) => {
       //response.headers.forEach((v,i) => console.log(i));
       //console.log(...response.headers);
@@ -68,7 +66,7 @@ function Signup() {
     const formData = new FormData();
     Object.keys(data).forEach(key => formData.append(key, data[key]));
     //formData.append("csrf_token", '')
-    fetch(url,{
+    fetch(signupUrl,{
       method:'POST',
       headers: {"X-CSRFToken": csrfToken.current},
       credentials:'include',
@@ -86,7 +84,7 @@ function Signup() {
       if (dataObj.virhe?.includes('csrf'))
         setError('password2',{type: "palvelinvirhe",message:'csfr-virhe' })
       else 
-        setError('password2',{type: "tunnusvirhe",message:'Tunnukset jo käytössä'})
+        setError('password2',{type: "tunnusvirhe",message:'Tunnukset ovat jo käytössä'})
       }
   }).catch(e => {setError('apiError',{ message:e })})
 }

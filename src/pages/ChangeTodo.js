@@ -9,7 +9,8 @@ import { useForm } from "react-hook-form";
 
 function ChangeTodo({open,close,todo,changeTodo}) {
    
-  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, watch, formState: { errors } } = 
+  useForm();
   //const {description,date,priority,id} = todo;
   /* Huom. reset-parametri id välittyy dataan, vaikka id-parametri ei ole lomakekenttä */
   let initialValue = todo
@@ -55,6 +56,7 @@ function ChangeTodo({open,close,todo,changeTodo}) {
            margin="normal"
            label="Date"
            type="datetime-local"
+           InputLabelProps={{ shrink: true }}  
            fullWidth
             />
 
@@ -72,7 +74,7 @@ function ChangeTodo({open,close,todo,changeTodo}) {
           <Select fullWidth
           {...register("priority", { required: true })}
           label="Priority"
-          defaultValue={initialValue.priority}
+          defaultValue={initialValue.priority || ''}
           >
           <MenuItem value="Matala">Matala</MenuItem>
           <MenuItem value="Normaali">Normaali</MenuItem>

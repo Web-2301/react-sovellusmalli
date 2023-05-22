@@ -10,16 +10,18 @@ import Login from './pages/Login';
 import { AuthContext } from "./context/Auth";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import logoImg from "./img/omnia_logo.png";
-import axios from "axios";
+import { consoleSivu, closeFetch } from "./connections/yhteydet"
+// import logoImg from "./img/omnia_logo.png";
+// import axios from "axios";
 
-const closeUrl = 'http://localhost:5000/reactapi/logout'
+//const closeUrl = 'http://localhost:5000/reactapi/logout'
 function App(props) {
   //const existingTokens = JSON.parse(localStorage.getItem("tokens") || '');
   //const [authTokens, setAuthTokens] = useState(JSON.parse(localStorage.getItem("tokens") || ''));
   const [authTokens, setAuthTokens] = useState(sessionStorage.getItem('tokens'));
   console.log('rendering App')
-  
+  consoleSivu()
+
   const setTokens = (data) => {
   console.log('setTokens:',data)
     /* Huom. logout kutsuu setTokens-funktiota ilman dataa,
@@ -29,7 +31,8 @@ function App(props) {
     if (data) sessionStorage.setItem("tokens", JSON.stringify(data));
     else {
       //axios.get(closeUrl,{withCredentials:true});
-      fetch(closeUrl,{credentials:'include'})
+      //fetch(closeUrl,{credentials:'include'})
+      closeFetch();
       sessionStorage.removeItem("tokens");
       }
     setAuthTokens(data);
