@@ -19,37 +19,16 @@ function Login(props) {
   }  */
    
   const { state } = useLocation()
-  /*if (state) {
-    console.log("Login,state:",state)
-    alert(state.location.pathname)
-    }*/ 
   
   let csrfToken = useRef('')
-  /*const baseUrl = "http://localhost:5000/reactapi/"
-  const url = baseUrl + "signin"
-  const csfrUrl = baseUrl + 'getcsrf'*/
 
   useEffect(() => {
     console.log(`useEffect`)
     csrf()
   }, [])
 
-  /*const csrf = () => {
-      fetch(csfrUrl, {
-        credentials: "include",
-      })
-      .then((response) => {
-        //response.headers.forEach((v,i) => console.log(i));
-        //console.log(...response.headers);
-        csrfToken.current = response.headers.get("X-CSRFToken");
-        console.log('csrf,csrfToken:',csrfToken.current);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    }*/
-  
-    const csrf = () => {
+    
+  const csrf = () => {
       csrfFetch()
       .then((response) => {
         //response.headers.forEach((v,i) => console.log(i));
@@ -67,32 +46,6 @@ function Login(props) {
       console.log("fetchLogin,data:",data)
       const formData = new FormData();
       Object.keys(data).forEach(key => formData.append(key, data[key]));
-      //formData.append("csrf_token", csrfToken.current)
-      /* fetch(url,{
-        method:'POST',
-        headers: {"X-CSRFToken": csrfToken.current},
-        credentials:'include',
-        body:formData})
-      .then(response => response.text())  
-      .then(data => {
-        console.log(`fetchLogin,response data:${data}`)
-        if (data === 'OK') {
-          setAuthTokens(data);
-          setLoggedIn(true);
-          } 
-        else {
-          const dataObj = JSON.parse(data)
-          if (dataObj.virhe?.includes('csrf'))
-            setError('password',{type: "palvelinvirhe"})
-          else 
-            setError('password',{type: "tunnusvirhe",message:dataObj.virhe})
-          }})
-      .catch(e => {
-        //e: TypeError: Failed to fetch
-        console.log('fetchLogin,e:',e)
-        setError('apiError',{ message:String(e) })
-      })*/
-
       loginFetch(formData,csrfToken.current)
       .then(response => response.text())  
       .then(data => {

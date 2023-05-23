@@ -4,7 +4,6 @@ import { Card, Otsikko, Logo, Form, Input, Button, Error } from '../components/A
 import { useForm } from "react-hook-form";
 import { baseUrl,csrfFetch } from '../connections/yhteydet';
 
-//import axios from 'axios';
 
 const initialValue = { email: '', username: '', password: '', password2: '' }
 // const baseUrl = "http://localhost:5000/reactapi/"
@@ -24,8 +23,6 @@ function Profiili(props) {
   const csrf = () => {
     csrfFetch()
     .then((response) => {
-      //response.headers.forEach((v,i) => console.log(i));
-      //console.log(...response.headers);
       csrfToken.current = response.headers.get("X-CSRFToken");
     })
     .catch((err) => {

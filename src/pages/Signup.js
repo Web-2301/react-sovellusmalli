@@ -32,13 +32,14 @@ function Signup() {
     });
   }
   
-  useEffect(() => {
+useEffect(() => {
     console.log(`useEffect`)
     csrf()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log('Signup,csrfToken:',csrfToken.current);
+console.log('Signup,csrfToken:',csrfToken.current);
+
   /*function postSignup(data) {
     console.log("data:",data)
     axios.post(url,data)
@@ -60,7 +61,7 @@ function Signup() {
     }).catch(e => {setError('apiError',{ message:e })})
   }*/
   
-  function fetchSignup(data) {
+function fetchSignup(data) {
     console.log("fetchSignup,csfrToken:",csrfToken.current)    
     console.log("data:",data)
     const formData = new FormData();
@@ -89,13 +90,11 @@ function Signup() {
   }).catch(e => {setError('apiError',{ message:e })})
 }
 
-
-
-  if (signedUp) {
+if (signedUp) {
     return <Navigate to='/login'/>;
   }
 
-  return (
+return (
     <Card>
       {/*<Logo src={logoImg} />*/}
       <Otsikko>Rekisteröityminen</Otsikko>
