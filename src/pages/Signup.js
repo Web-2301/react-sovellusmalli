@@ -91,6 +91,7 @@ function fetchSignup(data) {
 }
 
 if (signedUp) {
+  //Huom. ilmoitus sähköpostiosoitteen vahvistamisesta tarvitaan ensin.
     return <Navigate to='/login'/>;
   }
 
