@@ -3,7 +3,7 @@ import {
   NavBar,NavLinks,NavItem as NavLink,
   Logo,MenuButton,} from "./Navbar.style";
 import { FaBars,FaTimes } from "react-icons/fa"
-import { PrivateLink,PublicLink,LoginCloseButton } from '../PrivateLink'
+import { PrivateLink,PublicLink,LoginCloseButton } from './PrivateLink'
 import logoImg from "../img/omnia_logo.png";
 
 function Navbar() {
@@ -14,12 +14,12 @@ function Navbar() {
       <NavBar>
         <Logo src={logoImg}></Logo>
         <NavLinks openMenu={openMenu}>    
-            <NavLink to="/" activeClassName="active">Home</NavLink>
+            <NavLink to="/" activeclassname="active">Home</NavLink>
             {/* Kirjautumattoman käyttäjän testaaminen */}
-            <PublicLink to="/Testi" activeClassName="active">Profiili kirjautumatta</PublicLink>
-            <PrivateLink to="/Admin" activeClassName="active">Admin</PrivateLink>
-            <PrivateLink to="/Profiili" activeClassName="active">Profiili</PrivateLink>
-            <PrivateLink to="/Todolist" activeClassName="active">Todolist</PrivateLink>      
+            <PublicLink to="/Testi" activeclassname="active">Profiili kirjautumatta</PublicLink>
+            <PrivateLink to="/Admin" activeclassname="active">Admin</PrivateLink>
+            <PrivateLink to="/Profiili" activeclassname="active">Profiili</PrivateLink>
+            <PrivateLink to="/Todolist" activeclassname="active">Todolist</PrivateLink>      
             <LoginCloseButton/>
          </NavLinks>
         {/*<MenuButton onClick={() => setOpenMenu(!openMenu)}>

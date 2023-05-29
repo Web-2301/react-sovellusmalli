@@ -1,17 +1,17 @@
 import React, { useState,useEffect,useRef } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import axios from 'axios';
-import logoImg from "../img/omnia_logo.png";
-import { Card, Otsikko, Logo, Form, Input, Button, Error } from "../components/AuthForm";
+// import axios from 'axios';
+// import logoImg from "../img/omnia_logo.png";
+import { Card, Otsikko, Form, Input, Button, Error } from "../components/AuthForm";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/Auth";
-import { csrfFetch,loginFetch } from "../connections/yhteydet"
+import { csrfUrl,loginFetch } from "../connections/yhteydet"
 
 function Login(props) {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [ilmoitus, setIlmoitus] = useState({});
   const { setAuthTokens } = useAuth();
-  const { register, handleSubmit, setError, reset, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, setError, formState: { errors } } = useForm();
  
   /* var referer = '/';
    if (props && props.location.state){
@@ -29,7 +29,8 @@ function Login(props) {
 
     
   const csrf = () => {
-      csrfFetch()
+    console.log("csrf,csrfUrl:"+csrfUrl)
+    fetch(csrfUrl, {credentials: "include"})
       .then((response) => {
         //response.headers.forEach((v,i) => console.log(i));
         //console.log(...response.headers);
@@ -46,16 +47,22 @@ function Login(props) {
       console.log("fetchLogin,data:",data)
       const formData = new FormData();
       Object.keys(data).forEach(key => formData.append(key, data[key]));
-      loginFetch(formData,csrfToken.current)
-      .then(response => response.text())  
+
+      const searchParams = new URLSearchParams(window.location.search)
+      const next = searchParams.get('next') 
+      loginFetch(formData,csrfToken.current,next)
       .then(data => {
-        console.log(`fetchLogin,response data:${data}`)
-        if (data === 'OK') {
-          setAuthTokens(data);
+        const dataObj = JSON.parse(data)
+        console.log(`fetchLogin,response data:`,dataObj)
+        if (dataObj.ok) {
+          setAuthTokens('OK');
           setLoggedIn(true);
+          if (!!next && dataObj.message){
+            console.log("next:",next,"dataObj:",dataObj)
+            setIlmoitus(dataObj)
+            }
           } 
         else {
-          const dataObj = JSON.parse(data)
           if (dataObj.virhe?.includes('csrf'))
             setError('password',{type: "palvelinvirhe"})
           else 
@@ -86,12 +93,26 @@ function Login(props) {
     }).catch(e => {setError('apiError',{ message:e })})
   }
   */
-
-  if (loggedIn) {
+  console.log(`Login,message:${ilmoitus.message},loggedIn:${loggedIn}`)
+  if (loggedIn && !ilmoitus.message) {
     const referer = state?.location.pathname || '/' 
     //alert(`loggedIn:${loggedIn},referer:${referer}`)
     return <Navigate to={referer} />;
   }
+
+  if (ilmoitus.ok === 'OK' && ilmoitus.message) return (
+    <div>
+    <h2>Rekisteröityminen onnistui.</h2>
+    <p>{ilmoitus.message}</p>
+    </div>
+    )
+
+  if (ilmoitus.ok === 'Virhe') return (
+    <div>
+    <h2>Sähköpostiosoitteen vahvistaminen epäonnistui.</h2>
+    <p>{ilmoitus.message}</p>
+    </div>
+    )    
 
   return (
     <Card>

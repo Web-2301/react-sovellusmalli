@@ -59,6 +59,7 @@ function Todolist() {
   useEffect(() => {
     console.log(`useEffect,dc:${dc.current}`)
     fetchItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const registerInnerRef = (n,...loput) => {
@@ -237,13 +238,13 @@ function Todolist() {
   const [columnDefs] = useState([{ field: 'description', 
   sortable: true, 
   filter: true,
-  cellStyle: { 'padding-left': 0 } 
+  cellStyle: { 'paddingLeft': 0 } 
   },
 { field: 'date', 
   sortable: true, 
   filter: true,
   width: 150,
-  cellStyle: { 'padding-left': 0 },
+  cellStyle: { 'paddingLeft': 0 },
   valueGetter: p => localDateTime(p.data.date),
   comparator: dateComparator 
   },
@@ -251,14 +252,14 @@ function Todolist() {
   sortable: true,
   filter: true,
   width: 110,
-  cellStyle: { 'padding-left': 0 }, 
+  cellStyle: { 'paddingLeft': 0 }, 
   },
 { field: 'activate', 
   sortable:true,
   filter:true, 
   headerName: 'Active',
   width: 110,
-  cellStyle: { 'padding-left': 0 },
+  cellStyle: { 'paddingLeft': 0 },
   cellRenderer: p => 
 
     <Checkbox {...register(`checkboxes.${p.node.id}`)} defaultChecked={ p.value }>
@@ -268,7 +269,7 @@ function Todolist() {
   { field:'id', 
   headerName: '',
   width: 100,
-  cellStyle: { 'padding-left': 0 },
+  cellStyle: { 'paddingLeft': 0 },
   cellRenderer: p => 
     <>
     <input type='hidden' value={p.value}

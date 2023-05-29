@@ -130,16 +130,16 @@ const Navbar = () => {
         <i className="fa fa-bars" aria-hidden="true"></i>
       </NavButton>
       <NavMenu isOpen={isOpen}>
-        <NavItem exact to="/" activeClassName="active">
+        <NavItem exact to="/" activeclassname="active">
           Home
         </NavItem>
-        <NavItem to="/about" activeClassName="active">
+        <NavItem to="/about" activeclassname="active">
           About
         </NavItem>
-        <NavItem to="/services" activeClassName="active">
+        <NavItem to="/services" activeclassname="active">
           Services
         </NavItem>
-        <NavItem to="/contact" activeClassName="active">
+        <NavItem to="/contact" activeclassname="active">
           Contact
         </NavItem>
       </NavMenu>

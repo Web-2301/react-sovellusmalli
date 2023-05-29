@@ -1,15 +1,16 @@
 import React, { useState } from "react"
 import { Routes, Route } from "react-router-dom";
-import Private from './PrivateRoute';
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Profiili from "./pages/Profiili";
 import Todolist from "./pages/Todolist";
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import Confirmed from './pages/Confirmed';
 import { AuthContext } from "./context/Auth";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Private from './components/PrivateRoute';
 import { consoleSivu, closeFetch } from "./connections/yhteydet"
 // import logoImg from "./img/omnia_logo.png";
 // import axios from "axios";
@@ -51,6 +52,7 @@ function App(props) {
           <Route path="/admin" element={<Private><Admin/></Private>}/>
           <Route path="/profiili" element={<Private><Profiili/></Private>}/>
           <Route path="/todolist" element={<Private><Todolist/></Private>}/>
+          <Route path="/confirmed" element={<Confirmed/>}/>
         </Routes>
       </div>
       <Footer/>

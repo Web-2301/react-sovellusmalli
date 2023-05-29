@@ -10,6 +10,7 @@ import { baseUrl,csrfFetch } from '../connections/yhteydet';
 
 function Signup() {
   const [signedUp, setSignedUp] = useState(false);
+  const [email, setEmail] = useState('');
   // const { register, handleSubmit, reset, watch, formState: { errors } } = useForm({reValidateMode: 'onBlur'});
   const { register, handleSubmit, setError, reset, watch, formState: { errors } } = useForm();
   const password = useRef({});
@@ -38,7 +39,9 @@ useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-console.log('Signup,csrfToken:',csrfToken.current);
+console.log('Signup,csrfToken:',csrfToken.current)
+console.log(`Signup,signedUp:${signedUp},email:${email}`)
+
 
   /*function postSignup(data) {
     console.log("data:",data)
@@ -60,10 +63,17 @@ console.log('Signup,csrfToken:',csrfToken.current);
         }
     }).catch(e => {setError('apiError',{ message:e })})
   }*/
-  
-function fetchSignup(data) {
+const setErrors = errors => {
+for (let kentta in errors) {
+  console.log(`setErrors, ${kentta}:${errors[kentta]}:`)
+  setError(kentta,{type:"palvelinvirhe",message:errors[kentta]})
+  }
+}  
+
+const fetchSignup = data => {
     console.log("fetchSignup,csfrToken:",csrfToken.current)    
     console.log("data:",data)
+    const mail = data['email']
     const formData = new FormData();
     Object.keys(data).forEach(key => formData.append(key, data[key]));
     //formData.append("csrf_token", '')
@@ -76,7 +86,10 @@ function fetchSignup(data) {
     .then(data => {
     console.log(`data palvelimelta:${data}`)
     if (data === 'OK') {
-      setSignedUp(true);
+      setEmail(mail)
+      console.log(`täytetty email:${mail}`)
+      setSignedUp(true)
+      console.log(`päivittymätön signedUp:${signedUp}`)
       } 
     else {
       const dataObj = JSON.parse(data)
@@ -85,16 +98,28 @@ function fetchSignup(data) {
       if (dataObj.virhe?.includes('csrf'))
         setError('password2',{type: "palvelinvirhe",message:'csfr-virhe' })
       else 
-        setError('password2',{type: "tunnusvirhe",message:'Tunnukset ovat jo käytössä'})
+        //setError('password2',{type: "tunnusvirhe",message:'Tunnukset ovat jo käytössä'})
+        setErrors(dataObj)
       }
   }).catch(e => {setError('apiError',{ message:e })})
 }
 
-if (signedUp) {
-  //Huom. ilmoitus sähköpostiosoitteen vahvistamisesta tarvitaan ensin.
-    return <Navigate to='/login'/>;
-  }
+//Huom. ilmoitus sähköpostiosoitteen vahvistamisesta tarvitaan ensin.
+if (signedUp) return (
+  <div>
+  <h2>Rekisteröityminen onnistui!</h2>
+  <p>
+    Kiitos rekisteröitymisestä. Sähköpostiviesti on lähetetty antamaasi sähköpostiosoitteeseen <strong>{email}</strong> sen vahvistamiseksi.
+    Tarkista saapunut sähköpostisi ja seuraa viestissä annettuja ohjeita tilisi aktivoimiseksi.
+  </p>
+  <p>
+    Kun sähköpostiosoitteesi on vahvistettu voit kirjautua palveluun tästä: <Link to="/login">Kirjautuminen</Link>.
+  </p>
+  </div>
+    //return <Navigate to='/login'/>;
+  )
 
+if (!signedUp) 
 return (
     <Card>
       {/*<Logo src={logoImg} />*/}
@@ -146,7 +171,7 @@ return (
 
       <Button onClick={handleSubmit(data => fetchSignup(data))}>Tallenna</Button>
       </Form>
-      <Link to="/login">Already have an account?</Link>
+      <Link to="/login">Olet jo rekisteröitynyt? Kirjaudu sisään tästä.</Link>
     </Card>
   );
 }
