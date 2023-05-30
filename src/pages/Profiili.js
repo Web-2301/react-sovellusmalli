@@ -39,6 +39,7 @@ function Profiili(props) {
   useEffect(() => {
     console.log("Profiili,useEffect,haeProfiili")
     haeFetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
   
   console.log('Profiili,csrfToken:',csrfToken.current);
