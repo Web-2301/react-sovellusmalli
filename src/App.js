@@ -26,10 +26,9 @@ function App(props) {
   console.log('rendering App')
   consoleSivu()
 
-  /* Tyhjennetään poistuttessa state */
-  const location = useLocation()
+  /* Tyhjennetään state poistuttessa */
   let navigate = useNavigate()
-
+ 
   const setTokens = data => {
   console.log('setTokens:',data)
     /* Huom. logout kutsuu setTokens-funktiota ilman dataa,
