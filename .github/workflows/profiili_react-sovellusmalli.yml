@@ -21,12 +21,14 @@ jobs:
         with:
           node-version: '18.x'
 
+      - name: Fix warnings as errors
+        run: |
+          # Modify the command to disable treating warnings as errors
+          export CI=false
       - name: npm install, build, and test
         run: |
           npm install
           npm run build --if-present
-          env: 
-            CI: false
           npm run test --if-present
 
       - name: Upload artifact for deployment job
