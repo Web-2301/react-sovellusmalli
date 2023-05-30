@@ -1,4 +1,7 @@
+/* Suojatulle sivulle yrityksestä vahvistamattomalle käyttäjälle mahdollisuus 
+   sähköpostiosoitevahvistuslinkin uudelleen lähetykseen. */
 import React from "react";
+import { Link } from "react-router-dom";
 // import { Button } from "../components/AuthForm";
 // import { useAuth } from "../context/Auth";
 
@@ -7,10 +10,8 @@ function Unconfirmed(props) {
 console.log("Rendering Unconfirmed")
 
 return (
-    <div class="page-header">
-    <h1>
-        Hello, { props.username }!
-    </h1>
+    <div className="page-header">
+    <h1>Hello!</h1>
     <h3>You have not confirmed your account yet.</h3>
     <p>
         Before you can access this site you need to confirm your account.
@@ -18,8 +19,9 @@ return (
     </p>
     <p>
         Need another confirmation email?
-        <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a>
-    </p>
+    </p>    
+    <Link to="/confirm">Lähetä uusi sähköpostiosoitteen vahvistuslinkki</Link>
+    
 </div>
 )
 }

@@ -32,11 +32,18 @@ export function LoginCloseButton() {
        huono ratkaisu. Tilamuuttujan nollaus palauttaa perusnäkymän.
     */
       console.log("Poistu-painiketta napsautettiin..")
-      navigate(location.pathname, { replace: true });
+      console.log("LoginCloseButton,pathname:",location.pathname)
+      /* Huom. Tämä ei toimi, eli kirjautuu sille sivulle,
+         jolta viimeksi poistuttiin.
+       */
+      //navigate(location.pathname, { replace: true });
+      //window.history.replaceState({}, document.title)
+      navigate(location.pathname, {});
       setAuthTokens()
       }
 
-    const login = () => navigate('/login')
+    /* Huom. tämä toimii Kirjaudu-painikkeen napsautuksesta */  
+    const login = () => navigate('/login',{})
                 
     return (
       authTokens ?   

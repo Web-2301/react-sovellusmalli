@@ -13,6 +13,9 @@ const baseUrl = url + '/reactapi'
 const closeUrl = baseUrl + '/logout'
 const loginUrl = baseUrl + "/signin"
 const csrfUrl = baseUrl + '/getcsrf'
+const confirmUrl = baseUrl + '/confirm'
+
+
 console.log("loginUrl:"+loginUrl)
 /* Huom. Tarvitaanko CORSia varten palvelimelta header:
    'Access-Control-Allow-Origin': 'http://localhost:3000' 
@@ -21,6 +24,9 @@ console.log("loginUrl:"+loginUrl)
 let consoleSivu = () => console.log(`host:${host},href:${href},location:`,window.location)
 
 let csrfFetch = () => fetch(csrfUrl, {credentials: "include"})
+
+let confirmFetch = () => fetch(confirmUrl, {credentials: "include"})
+                         .then(response => response.text())  
 
 let loginFetch = (formData,csrfToken,next) => {
     /* Huom. toimii myös ilman kauttaviivojen muuntamista
@@ -40,4 +46,4 @@ let loginFetch = (formData,csrfToken,next) => {
 
 let closeFetch = () => fetch(closeUrl,{credentials:'include'})
 
-export { baseUrl,csrfUrl,consoleSivu,closeFetch,csrfFetch,loginFetch };
+export { baseUrl,csrfUrl,consoleSivu,closeFetch,csrfFetch,loginFetch,confirmFetch };

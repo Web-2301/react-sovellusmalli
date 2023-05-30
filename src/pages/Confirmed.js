@@ -1,3 +1,4 @@
+/* Vahvistuslinkin saapumiskuittaus sähköpostiosoitteen aikaisemmasta vahvistuksesta. */
 import React from "react";
 // import { Button } from "../components/AuthForm";
 // import { useAuth } from "../context/Auth";

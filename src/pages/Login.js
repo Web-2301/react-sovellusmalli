@@ -10,7 +10,7 @@ import { csrfUrl,loginFetch } from "../connections/yhteydet"
 function Login(props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [ilmoitus, setIlmoitus] = useState({});
-  const { setAuthTokens } = useAuth();
+  const { setAuthTokens,setConfirm } = useAuth();
   const { register, handleSubmit, setError, formState: { errors } } = useForm();
  
   /* var referer = '/';
@@ -59,6 +59,7 @@ function Login(props) {
           setLoggedIn(true);
           if (!!next && dataObj.message){
             console.log("next:",next,"dataObj:",dataObj)
+            setConfirm('CONFIRMED')
             setIlmoitus(dataObj)
             }
           } 
@@ -97,6 +98,7 @@ function Login(props) {
   if (loggedIn && !ilmoitus.message) {
     const referer = state?.location.pathname || '/' 
     //alert(`loggedIn:${loggedIn},referer:${referer}`)
+    console.log(`Login,referer:${referer}`)
     return <Navigate to={referer} />;
   }
 
