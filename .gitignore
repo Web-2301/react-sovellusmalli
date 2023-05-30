@@ -24,4 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 
 /react-router-auth_org
-
+App.test.js
