@@ -1,6 +1,7 @@
 let { origin,host,hostname,port,protocol,href } = window.location
 console.log(`window.location:${origin},${host},${hostname},${port},${protocol},${href}`)
 let url = origin
+let base = '/react-sovellusmalli'
 /* Paikallinen react- ja flask-kehityspalvelin */
 if (port != '' && port == '3000') url = url.replace(port,"5000")
 /* XAMPP ja flask-kehitys- tai -waitress -palvelin, huom. waitress muuntaa localhostin IP-osoitteeksi. */
@@ -8,12 +9,18 @@ else if (host === 'localhost') {
     url = '127.0.0.1' + ':5000'
     console.log("host:"+host+",url:"+url)
     }
+else {
+    url = process.env.REACT_APP_API_URL
+    base = ''
+    console.log("host:"+host+",url:"+url)
+    }    
 const baseUrl = url + '/reactapi'
 //const closeUrl = 'http://localhost:5000/reactapi/logout'
 const closeUrl = baseUrl + '/logout'
 const loginUrl = baseUrl + "/signin"
 const csrfUrl = baseUrl + '/getcsrf'
 const confirmUrl = baseUrl + '/confirm'
+const basename = base
 
 
 console.log("loginUrl:"+loginUrl)
@@ -46,4 +53,4 @@ let loginFetch = (formData,csrfToken,next) => {
 
 let closeFetch = () => fetch(closeUrl,{credentials:'include'})
 
-export { baseUrl,csrfUrl,consoleSivu,closeFetch,csrfFetch,loginFetch,confirmFetch };
+export { basename,baseUrl,csrfUrl,consoleSivu,closeFetch,csrfFetch,loginFetch,confirmFetch };
