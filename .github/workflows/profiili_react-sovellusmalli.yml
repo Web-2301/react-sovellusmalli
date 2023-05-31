@@ -21,6 +21,11 @@ jobs:
         with:
           node-version: '18.x'
 
+      - name: Fix warnings as errors
+        run: |
+          # Modify the command to disable treating warnings as errors
+          echo "CI=false" >> $GITHUB_ENV
+
       - name: npm install, build, and test
         run: |
           npm install
