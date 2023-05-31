@@ -4,12 +4,12 @@ import React from "react";
 import { useAuth } from "../context/Auth";
 
 
-function Confirmed ({ location }) {
+function Confirmed (props) {
 const { authConfirm,setAuthConfirm } = useAuth();
-console.log("Rendering Confirmed")
+console.log("Rendering Confirmed, window.location.search:",window.location.search)
 
 /* ?jo=jo */
-let jo = location.search ? "jo " : ""
+let jo = window.location.search ? "jo " : ""
 if (!authConfirm) setAuthConfirm('CONFIRMED')
 
 return (

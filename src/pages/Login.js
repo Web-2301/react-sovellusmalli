@@ -25,6 +25,7 @@ function Login(props) {
   useEffect(() => {
     console.log(`useEffect`)
     csrf()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
     
@@ -58,9 +59,8 @@ function Login(props) {
         if (dataObj.ok) {
           setAuthTokens('OK');
           setLoggedIn(true);
-          if (dataObj.confirmed) {
-            setAuthConfirm('CONFIRMED')
-            }
+          if (dataObj.confirmed) setAuthConfirm('CONFIRMED')
+          else setAuthConfirm()  
           if (!!next && dataObj.message){
             console.log("next:",next,"dataObj:",dataObj)
             // setAuthConfirm('CONFIRMED')

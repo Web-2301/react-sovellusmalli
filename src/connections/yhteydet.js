@@ -6,7 +6,7 @@ let base = '/react-sovellusmalli'
 if (port != '' && port == '3000') url = url.replace(port,"5000")
 /* XAMPP ja flask-kehitys- tai -waitress -palvelin, huom. waitress muuntaa localhostin IP-osoitteeksi. */
 else if (host === 'localhost') {
-    url = '127.0.0.1' + ':5000'
+    url = '127.0.0.1:5000'
     console.log("host:"+host+",url:"+url)
     }
 else {
