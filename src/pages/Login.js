@@ -10,7 +10,7 @@ import { csrfUrl,loginFetch } from "../connections/yhteydet"
 function Login(props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [ilmoitus, setIlmoitus] = useState({});
-  const { setAuthTokens,setConfirm } = useAuth();
+  const { setAuthTokens,setAuthConfirm } = useAuth();
   const { register, handleSubmit, setError, formState: { errors } } = useForm();
  
   /* var referer = '/';
@@ -59,7 +59,7 @@ function Login(props) {
           setLoggedIn(true);
           if (!!next && dataObj.message){
             console.log("next:",next,"dataObj:",dataObj)
-            setConfirm('CONFIRMED')
+            setAuthConfirm('CONFIRMED')
             setIlmoitus(dataObj)
             }
           } 
