@@ -1,12 +1,11 @@
 /* Vahvistuslinkin saapumiskuittaus sähköpostiosoitteen aikaisemmasta 
    tai tuoreesta vahvistuksesta. */
 import React from "react";
-// import { Button } from "../components/AuthForm";
 import { useAuth } from "../context/Auth";
-const { authConfirm,setAuthConfirm } = useAuth();
+
 
 function Confirmed ({ location }) {
-// const { setAuthTokens } = useAuth();
+const { authConfirm,setAuthConfirm } = useAuth();
 console.log("Rendering Confirmed")
 
 /* ?jo=jo */
