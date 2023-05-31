@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import dotenv from 'dotenv/config';
+// import dotenv from 'dotenv/config';
 import { basename } from "./connections/yhteydet"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
