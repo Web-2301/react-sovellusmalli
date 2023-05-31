@@ -39,6 +39,7 @@ function Login(props) {
       })
       .catch((err) => {
         console.log(err);
+        setError('apiError',{ message:String(err) })
       });
     }  
 
@@ -57,9 +58,12 @@ function Login(props) {
         if (dataObj.ok) {
           setAuthTokens('OK');
           setLoggedIn(true);
+          if (dataObj.confirmed) {
+            setAuthConfirm('CONFIRMED')
+            }
           if (!!next && dataObj.message){
             console.log("next:",next,"dataObj:",dataObj)
-            setAuthConfirm('CONFIRMED')
+            // setAuthConfirm('CONFIRMED')
             setIlmoitus(dataObj)
             }
           } 
