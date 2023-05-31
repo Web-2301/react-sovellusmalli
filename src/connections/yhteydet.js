@@ -10,7 +10,9 @@ else if (host === 'localhost') {
     console.log("host:"+host+",url:"+url)
     }
 else {
-    url = process.env.REACT_APP_API_URL
+    //url = process.env.REACT_APP_API_URL
+    /* Flask-sovellus myös Azuressa */
+    url = 'https://flask-sovellusmalli-ii/azurewebsites.net'
     base = ''
     console.log("host:"+host+",url:"+url)
     }    
