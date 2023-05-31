@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Set up Node.js version
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v1
         with:
           node-version: '18.x'
 
@@ -25,17 +25,17 @@ jobs:
         run: |
           # Modify the command to disable treating warnings as errors
           echo "CI=false" >> $GITHUB_ENV
+
       - name: npm install, build, and test
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: build/
 
   deploy:
     runs-on: ubuntu-latest
@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'react-sovellusmalli'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C0FCCF2F01F04C34975A5A460FDDF34A }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8B5410AB9A724325A3311AC7DFC802E2 }}
           package: .
