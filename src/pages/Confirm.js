@@ -1,12 +1,8 @@
 /* Sähköpostiosoitevahvistuslinkin uudelleen lähetys */
 import React, { useState,useEffect } from "react";
-import { Navigate } from "react-router-dom";
 import { confirmFetch } from "../connections/yhteydet"
-// import { Button } from "../components/AuthForm";
-import { useAuth } from "../context/Auth";
 
 function Confirm(props) {
-const { authTokens } = useAuth();
 const [ilmoitus, setIlmoitus] = useState();
 console.log("Rendering Confirm")
 

@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 function Confirmed (props) {
 const { authConfirm,setAuthConfirm } = useAuth();
 const location = useLocation()
-console.log("Rendering Confirmed, window.location.search:",window.location.search)
+console.log("Rendering Confirmed, window.location.search:",location.search)
 
 /* ?jo=jo */
 // let jo = window.location.search ? "jo " : ""

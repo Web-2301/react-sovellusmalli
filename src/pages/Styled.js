@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FormFeedback } from 'reactstrap'
+// import { FormFeedback } from 'reactstrap'
 
 const Card = styled.div`
   box-sizing: border-box;

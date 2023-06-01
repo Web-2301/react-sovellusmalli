@@ -101,7 +101,6 @@ function Login(props) {
   console.log(`Login,message:${ilmoitus.message},loggedIn:${loggedIn}`)
   if (loggedIn && !ilmoitus.message) {
     const referer = state?.location.pathname || '/' 
-    //alert(`loggedIn:${loggedIn},referer:${referer}`)
     console.log(`Login,referer:${referer}`)
     return <Navigate to={referer} />;
   }
@@ -118,6 +117,7 @@ function Login(props) {
     <div>
     <h2>Sähköpostiosoitteen vahvistaminen epäonnistui.</h2>
     <p>{ilmoitus.message}</p>
+    <Link to="/confirm">Voit pyytää uutta sähköpostiosoitteesi vahvistusviestiä tästä.</Link>
     </div>
     )    
 

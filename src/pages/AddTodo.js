@@ -4,9 +4,7 @@ import {
   Box,Button,TextField,FormControl,InputLabel,Select,MenuItem,Dialog,DialogActions,
   DialogContent,DialogTitle } from '@mui/material';
 import { Error,InputS,SelectS,Button as ButtonS } from './Styled';
-import { Form, Input, Button as ButtonR, 
-  Modal, ModalFooter,
-  ModalHeader, ModalBody } from 'reactstrap';
+import { Input,Button as ButtonR,Modal,ModalFooter,ModalHeader,ModalBody } from 'reactstrap';
 import { useForm } from "react-hook-form";
 
 const initialValue = { description: '', date: '', priority: '' }
@@ -46,18 +44,22 @@ function AddTodo(props) {
     handleClose();
     }
 
-  /*const inputChanged = (event) => {
+  /*
+  const inputChanged = (event) => {
     setTodo({...todo, [event.target.name]: event.target.value});
-  }*/
+  }
+  */
 
+  /*
   const inputChangedReactstrap = (event) => {
-    /* Toimii: Lomakkeen tallennukseen tarvitaan todo,
+    Toimii: Lomakkeen tallennukseen tarvitaan todo,
        lomakkeen tarkistuksiin tarvitaan kentän reset,
        mutta korvaamalla lähetyksessä todo lomakkeen datalla,
        tämä käy tarpeettomaksi. */
     /* setTodo({...todo, [event.target.name]: event.target.value});
-    reset({[event.target.name]:event.target.value})*/
+    reset({[event.target.name]:event.target.value})
   }
+  */
 
   /*
     const registerInnerRef = (n,...loput) => {

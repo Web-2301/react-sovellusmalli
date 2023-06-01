@@ -1,23 +1,18 @@
 import React, { useState,useRef,useEffect } from "react";
-import { Link, Navigate } from 'react-router-dom';
-// import logoImg from "../img/omnia_logo.png";
-import { Card, Otsikko, Logo, Form, Input, Button, Error } from '../components/AuthForm';
+import { Link } from 'react-router-dom';
+import { Card,Otsikko,Form,Input,Button,Error } from '../components/AuthForm';
 import { useForm } from "react-hook-form";
 import { baseUrl,csrfFetch } from '../connections/yhteydet';
-
-// import axios from 'axios';
 
 
 function Signup() {
   const [signedUp, setSignedUp] = useState(false);
   const [email, setEmail] = useState('');
-  // const { register, handleSubmit, reset, watch, formState: { errors } } = useForm({reValidateMode: 'onBlur'});
-  const { register, handleSubmit, setError, reset, watch, formState: { errors } } = useForm();
+  // const { register, handleSubmit, watch, formState: { errors } } = useForm({reValidateMode: 'onBlur'});
+  const { register, handleSubmit, setError, watch, formState: { errors } } = useForm();
   const password = useRef({});
   password.current = watch("password", "");
   const csrfToken = useRef('');
-  // const baseUrl = "http://localhost:5000/reactapi/"
-  // const csrfUrl = baseUrl + 'getcsrf'
   const signupUrl = baseUrl + "/signup"
   console.log("Signup renderöidään...")
 
@@ -113,7 +108,7 @@ if (signedUp) return (
     Tarkista saapunut sähköpostisi ja seuraa viestissä annettuja ohjeita tilisi aktivoimiseksi.
   </p>
   <p>
-    Kun sähköpostiosoitteesi on vahvistettu voit kirjautua palveluun tästä: <Link to="/login">Kirjautuminen</Link>.
+    Kun sähköpostiosoitteesi on vahvistettu, voit kirjautua palveluun tästä: <Link to="/login">Kirjautuminen</Link>.
   </p>
   </div>
     //return <Navigate to='/login'/>;

@@ -22,23 +22,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import AddTodo from './AddTodo';
 import ChangeTodo from './ChangeTodo';
 // import moment from 'moment'
-import { AgGridReact,AgGridColumn } from 'ag-grid-react';
+import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
-/*
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import { Box,Checkbox,Button } from "@material-ui/core";*/
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button,Checkbox,Box } from '@mui/material';
-
-// import { CheckboxS } from './Styled';
 import { useForm } from "react-hook-form";
-//import 'bootstrap/dist/css/bootstrap.min.css';
-import { Input } from 'reactstrap';
 
 
 const url = 'https://react-bookstore-omnia-default-rtdb.europe-west1.firebasedatabase.app/items/';
@@ -54,7 +45,6 @@ function Todolist() {
   const [todo, setTodo] = useState(initialValue);
   /* Checkboxien alustukseen tarvittaessa */
   const dc = useRef(true);
-  // const dci = useRef(0);
 
   useEffect(() => {
     console.log(`useEffect,dc:${dc.current}`)
@@ -62,23 +52,14 @@ function Todolist() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  /*
   const registerInnerRef = (n,...loput) => {
-    /* Reactstrapin innerRef-määritys */
+    // Reactstrapin innerRef-määritys 
     let {ref:innerRef,...rest} = register(n,...loput);
     //console.log('innerRef:',innerRef,'rest:',rest);
     return {innerRef,...rest}
     }
-
- // if (Array.isArray(todos) && todos.length) {
-   // dci.current += 1;
-   // if (dc.current !== false) dc.current = true
-   // console.log(`todos,dci:${dci.current}`)
- // }
- // else dci.current += 1;
-
- // console.log(`todolist,dc:${dc.current}`)
- // let dcset = dci.current == 2
- // let dcset = dc.current 
+  */
  
  /*function Checkbox({checked,i}) {
    console.log(`Checkbox[${i}]:${dc.current},${checked}`)
@@ -103,10 +84,10 @@ function Todolist() {
     setTodos(valueKeys);
   }
 
-  const handleUpdate = (oldTodo,id) => {
+  const handleUpdate = oldTodo => {
     /* Listan muutospainikkeet: listarivin arvot todo-lomaketilamuuttujaan.
-       Lomakkeen avaaminen esitäytettynä. */
-    oldTodo = { ...oldTodo,['id']:id}
+       Lomakkeen avaaminen esitäytettynä. Huom. p.data.id = p.value */
+    // oldTodo = { ...oldTodo,['id']:id }
     console.log('oldTodo:',oldTodo);   
     setTodo(oldTodo);
     setOpen(true);
@@ -124,7 +105,7 @@ function Todolist() {
     .catch(err => console.error(err))
   }
 
-  const deleteTodo = (id) => {
+  const deleteTodo = id => {
     //const confirm = window.confirm("Are you sure, you want to delete this row?");
     let confirm = true;
     confirm && fetch(url + `${id}.json`,{
@@ -187,13 +168,6 @@ function Todolist() {
 
   const activateTodo = (id,data) => {
         /* Päivitä tietokannan todo */
-        // console.log(`activateTodo:${id}:${activate}`) 
-        // let data = todos.find(e => e.id === id);
-        // let data = todos[i];
-        // const data = {...data, activate:activate};
-        // data.activate = activate;
-        // console.log('activateTodo,todo:',data)
-        //if (true) return;
         fetch(url + `${data.id}.json`,{
           method: 'PUT',
           body: JSON.stringify(data)
@@ -201,7 +175,7 @@ function Todolist() {
         .catch(err => console.error(err))
       }
 
-    const handleSave = (data,e) => {
+  const handleSave = (data,e) => {
         // dc.current = false
         // e.preventDefault();
         console.log("handleSave,e:",e)
@@ -220,7 +194,7 @@ function Todolist() {
         // setTodos(uusiTodos)
         }    
 
-    const handleClick = () => {
+  const handleClick = () => {
         dc.current = false
         console.log("handleClick:",dc.current)
         }        
@@ -228,7 +202,6 @@ function Todolist() {
     /* const handleOnClick = e => {
         console.log("handleOnClick:",e.target.checked)
         } */        
-
 
     /* const check = c => {
       console.log(`checkbox[${c.id}]:${c.data.activate}`)
@@ -274,7 +247,7 @@ function Todolist() {
     <>
     <input type='hidden' value={p.value}
     {...register(`lista.${p.node.id}`)} />
-    <IconButton onClick={() => handleUpdate(p.data,p.value)} size="small" color="secondary">
+    <IconButton onClick={() => handleUpdate(p.data)} size="small" color="secondary">
     <EditIcon/></IconButton>
     <IconButton onClick={() => deleteTodo(p.value)} size="small" color="secondary">
     <DeleteIcon/></IconButton>

@@ -3,9 +3,14 @@ console.log(`window.location:${origin},${host},${hostname},${port},${protocol},$
 let url = origin
 let base = '/react-sovellusmalli'
 /* Paikallinen react- ja flask-kehityspalvelin */
-if (port != '' && port == '3000') url = url.replace(port,"5000")
+// if (port != '' && port == '3000') url = url.replace(port,"5000")
+if (port && port === '3000') {
+    console.log(`yhteydet,port:${port}`)
+    url = url.replace(port,"5000")
+    }
 /* XAMPP ja flask-kehitys- tai -waitress -palvelin, huom. waitress muuntaa localhostin IP-osoitteeksi. */
 else if (host === 'localhost') {
+    console.log(`yhteydet,host:${host}`)
     url = '127.0.0.1:5000'
     console.log("host:"+host+",url:"+url)
     }

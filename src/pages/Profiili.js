@@ -1,5 +1,5 @@
 import React, { useState,useRef,useEffect } from "react";
-import { Card, Otsikko, Logo, Form, Input, Button, Error } from '../components/AuthForm';
+import { Card, Otsikko, Form, Input, Button, Error } from '../components/AuthForm';
 //import { Error } from './Styled';
 import { useForm } from "react-hook-form";
 import { baseUrl,csrfFetch } from '../connections/yhteydet';
@@ -13,7 +13,7 @@ const urlHae = baseUrl + "/haeProfiili"
 
 function Profiili(props) {
   const [tallennusOK, setTallennusOK] = useState(false);
-  const { register, handleSubmit, setValue, setError, reset, watch, formState: { errors } } = useForm(initialValue);
+  const { register, handleSubmit, setValue, setError, watch, formState: { errors } } = useForm(initialValue);
   const password = useRef({});
   password.current = watch("password", "");
   const csrfToken = useRef('');
