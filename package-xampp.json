@@ -1,6 +1,6 @@
 {
   "name": "react-sovellusmalli",
-  "homepage": "http://localhost/projektit_react/react-sovellusmalli/",
+  "homepage": "/react-sovellusmalli/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,7 +30,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "set BUILD_PATH=../../../xampp/htdocs/react-sovellusmalli && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
