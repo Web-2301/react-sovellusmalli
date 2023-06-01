@@ -2,14 +2,17 @@
    tai tuoreesta vahvistuksesta. */
 import React from "react";
 import { useAuth } from "../context/Auth";
+import { useLocation } from "react-router-dom";
 
 
 function Confirmed (props) {
 const { authConfirm,setAuthConfirm } = useAuth();
+const location = useLocation()
 console.log("Rendering Confirmed, window.location.search:",window.location.search)
 
 /* ?jo=jo */
-let jo = window.location.search ? "jo " : ""
+// let jo = window.location.search ? "jo " : ""
+let jo = location.search ? "jo " : ""
 if (!authConfirm) setAuthConfirm('CONFIRMED')
 
 return (

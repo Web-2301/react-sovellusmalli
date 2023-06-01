@@ -113,6 +113,7 @@ function Login(props) {
     </div>
     )
 
+  /* Huom. Tässä tarvitaan joko painike tai ohjaus vahvistussivulle */  
   if (ilmoitus.ok === 'Virhe') return (
     <div>
     <h2>Sähköpostiosoitteen vahvistaminen epäonnistui.</h2>
