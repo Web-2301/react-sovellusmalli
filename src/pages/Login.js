@@ -18,7 +18,7 @@ function Login(props) {
      referer = props.location.state.referer || '/';
   }  */
    
-  const { state } = useLocation()
+  //const { state } = useLocation()
   
   let csrfToken = useRef('')
 
@@ -98,11 +98,14 @@ function Login(props) {
     }).catch(e => {setError('apiError',{ message:e })})
   }
   */
+  const { state } = useLocation()
   console.log(`Login,message:${ilmoitus.message},loggedIn:${loggedIn}`)
   if (loggedIn && !ilmoitus.message) {
     const referer = state?.location.pathname || '/' 
-    console.log(`Login,referer:${referer}`)
-    return <Navigate to={referer} />;
+    const search = state?.location.search || '' 
+    const to = `${referer}${search}`
+    console.log(`Login,to:${to},state:`,state)
+    return <Navigate to={to} replace={true} />
   }
 
   if (ilmoitus.ok === 'OK' && ilmoitus.message) return (

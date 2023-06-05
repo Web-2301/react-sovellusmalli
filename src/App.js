@@ -51,16 +51,13 @@ function App(props) {
     setAuthTokens(data);
     }
 
-    const setConfirm = data => {
-      console.log('setConfirm:',data)
-        if (data) localStorage.setItem("confirm", JSON.stringify(data));
-        else {
-          localStorage.removeItem("confirm");
-          }
-        setAuthConfirm(data);
-        }
-
-
+  const setConfirm = data => {
+    console.log('setConfirm:',data)
+    if (data) localStorage.setItem("confirm", JSON.stringify(data));
+    else localStorage.removeItem("confirm");  
+    setAuthConfirm(data);
+    }
+  
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens, authConfirm, setAuthConfirm: setConfirm }}>
       {console.log("Provider,authTokens:",authTokens,"authConfirm:",authConfirm)}
